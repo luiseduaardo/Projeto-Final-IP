@@ -1,25 +1,29 @@
-# 🎮 Nome do jogo (TBD)
+# 🎮 | Nome do jogo
 
-## 🧾 Descrição
+*sobre o jogo*
 
-- TBD
+## 👨‍💻 | Integrantes
 
-## 👨‍💻👩‍💻 Integrantes
+- [Luís Eduardo Cavalcante Santos &lt;lecs2&gt](https://github.com/luiseduaardo)
+- [João Vitor Figueiredo de Vasconcelos &lt;jvfv&gt](https://github.com/jvitorfig)
+- [João Victor Siqueira Araújo &lt;jvsa&gt](https://github.com/jvictorsiqueira14)
+- [Nara Maria Silva Pontes &lt;nmsp&gt](https://github.com/naramsp)
+- [Eduardo Henrique Buarque Almeida &lt;ehba&gt](https://github.com/ed-henri)
 
-- Luís Eduardo Cavalcante Santos &lt;lecs2&gt;
-- João Vitor Figueiredo de Vasconcelos &lt;jvfv&gt;
-- João Victor Siqueira Araújo &lt;jvsa&gt;
-- Nara Maria Silva Pontes &lt;nmsp&gt;
-- Eduardo Henrique Buarque Almeida &lt;ehba&gt;
+## 🧾 | Arquitetura do projeto e organização
 
-## 🕹️ Nome do Jogo
 
-> TBD
+## 📸 | Capturas de tela
 
-## 📌 Objetivo do Jogo
 
-- TBD
+## ⚙️ | Ferramentas utilizadas
 
-## ⚙️ Funcionalidades
 
-- TBD
+## 👥 | Divisão de tarefas
+
+
+## 📚 | Conceitos utilizados
+
+
+## 🧠 | Desafios e lições aprendidas
+
