@@ -2,6 +2,7 @@ import pygame as pg
 from pygame.locals import *
 from constants import *
 from stefan import *
+from coletaveis import *
 
 class Game:
     def __init__(self):
@@ -13,6 +14,7 @@ class Game:
 
         self.todos_sprites = pg.sprite.Group()
         self.plataformas = pg.sprite.Group()
+        self.coletaveis = pg.sprite.Group()
 
         self.stefan = Stefan(self, LARGURA // 2, ALTURA // 2)
         self.todos_sprites.add(self.stefan)
@@ -38,6 +40,13 @@ class Game:
         self.todos_sprites.add(plataforma_cima2)
         self.plataformas.add(plataforma_cima2)
 
+        item_teste = Coletavel(400, ALTURA - 80, 'bicicleta')
+        self.todos_sprites.add(item_teste)
+        self.coletaveis.add(item_teste)
+
+        self.tempo_restante = TEMPO_INICIAL
+        self.joias_coletadas = set()
+
 
     def run(self):
         while self.rodando:
@@ -62,3 +71,15 @@ class Game:
         self.tela.fill(PRETO)
         self.todos_sprites.draw(self.tela)
         pg.display.flip()
+
+    def coletar_joia(self, tipo_joia):
+        print(f"coletou a {tipo_joia}")
+        self.joias_coletadas.add(tipo_joia)
+        self.checar_condicao_vitoria()
+    
+    def adicionar_tempo(self, segundos):
+        print(f"coletou o clock e adicionou {segundos} segundos")
+        self.tempo_restante += segundos
+    
+    def checar_condicao_vitoria(self):
+        pass
