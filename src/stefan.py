@@ -8,7 +8,6 @@ class Stefan(pg.sprite.Sprite):
 
         self.image = pg.Surface((40, 40))
         self.image.fill(VERMELHO)
-
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x, pos_y)
 
@@ -16,14 +15,24 @@ class Stefan(pg.sprite.Sprite):
         self.velocidade = pg.math.Vector2(0, 0)
         self.aceleracao = pg.math.Vector2(0, 0)
 
+        self.boost_ativo = False
+        self.boost_tempo_fim = 0
+
     def update(self):
         self.aceleracao = pg.math.Vector2(0, GRAVIDADE_STEFAN)
 
+        aceleracao_base = ACELERACAO_STEFAN
+        if self.boost_ativo:
+            aceleracao_base = ACELERACAO_BOOST
+            if pg.time.get_ticks() > self.boost_tempo_fim:
+                self.boost_ativo = False
+                print(f"fim do tempo do boost de velocidade")
+
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.aceleracao.x = -ACELERACAO_STEFAN
+            self.aceleracao.x = -aceleracao_base
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.aceleracao.x = ACELERACAO_STEFAN
+            self.aceleracao.x = aceleracao_base
 
         # define a física do movimento horizontal e possíveis colisões
         self.aceleracao.x += self.velocidade.x * ATRITO_STEFAN
@@ -48,10 +57,14 @@ class Stefan(pg.sprite.Sprite):
         if colisoes_y:
             if self.velocidade.y > 0: # em caso de colidir na descida
                 self.rect.bottom = colisoes_y[0].rect.top
+                self.velocidade.y = 0
+                self.posicao.y = self.rect.bottom
             if self.velocidade.y < 0: # em caso de colidir na subida (bate a cabeça)
                 self.rect.top = colisoes_y[0].rect.bottom
-            self.velocidade.y = 0
-            self.posicao.y = self.rect.bottom
+                self.velocidade.y = 0
+                self.posicao.y = self.rect.bottom
+        
+        self.checar_colisao_itens()
     
     def pular(self):
         self.rect.y += 1
@@ -60,3 +73,20 @@ class Stefan(pg.sprite.Sprite):
 
         if colisoes_plataforma:
             self.velocidade.y = FORCA_PULO
+
+    def checar_colisao_itens(self):
+        itens_coletados = pg.sprite.spritecollide(self, self.game.coletaveis, True)
+        for item in itens_coletados:
+            if 'joia' in item.tipo:
+                self.game.coletar_joia(item.tipo)
+            
+            elif item.tipo == 'bicicleta':
+                self.ativar_boost_velocidade()
+
+            elif item.tipo == 'clock':
+                self.game.adicionar_tempo(TEMPO_CLOCK)
+
+    def ativar_boost_velocidade(self):
+        print(f"bicicleta coletada.")
+        self.boost_ativo = True
+        self.boost_tempo_fim = pg.time.get_ticks() + TEMPO_BOOST
