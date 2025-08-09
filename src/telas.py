@@ -4,184 +4,181 @@ from constants import *
 from botoes import *
 from sys import exit
 
+class Tela_base:
+    def __init__(self, game):
+        self.game = game
+        self.tela = game.tela
+        self.fonte_padrao = pg.font.SysFont('arial', 20, True, True)
 
-def tela_inicial(tela):
-    play_img = pg.image.load('imagens/play.png').convert_alpha()
-    quit_img = pg.image.load('imagens/quit.png').convert_alpha()
-    settings_img = pg.image.load('imagens/settings.png').convert_alpha()
+    def eventos(self, eventos):
+        for event in eventos:
+            if event.type == QUIT:
+                pg.quit()
+                exit()
 
-    # instanciando os botoes
-    botao_play = Botao((LARGURA - play_img.get_width())//2, 100, play_img, 1)
-    botao_settings = Botao((LARGURA - settings_img.get_width())//2, 270, settings_img, 1)
-    botao_exit = Botao((LARGURA - quit_img.get_width())//2, 440, quit_img, 1)
+    
+    def desenhar_texto(self, mensagem, cor, x, y):
+        mensagem_formatada = self.fonte_padrao.render(mensagem, True, cor)
+        ret_mensagem = mensagem_formatada.get_rect(center = (x, y))
+        self.tela.blit(mensagem_formatada, ret_mensagem)
 
-    while True:
+        
+    def mudar_tela(self, nova_tela_classe):
+        self.game.tela_atual = nova_tela_classe(self.game)
 
-        tela.fill(BRANCO)
 
-        botao_play.desenhar_botao(tela)
-        botao_settings.desenhar_botao(tela)
-        botao_exit.desenhar_botao(tela)
+    def update(self):
+        pass
+    
+    def desenhar(self):
+        self.tela.fill(BRANCO)
 
-        if botao_play.click():
-            primeira_fase(tela)
-        if botao_settings.click():
-            controles(tela)
-        if botao_exit.click():
+
+
+class Tela_inicial(Tela_base):
+
+    def __init__(self, game):
+        super().__init__(game)
+
+        #imagens
+        self.play_img = pg.image.load('imagens/play.png').convert_alpha()
+        self.quit_img = pg.image.load('imagens/quit.png').convert_alpha()
+        self.settings_img = pg.image.load('imagens/settings.png').convert_alpha()
+        #instanciando os botoes
+        self.botao_play = Botao((LARGURA - self.play_img.get_width()) // 2, 100, self.play_img, 1)
+        self.botao_settings = Botao((LARGURA - self.settings_img.get_width()) // 2, 270, self.settings_img, 1)
+        self.botao_exit = Botao((LARGURA - self.quit_img.get_width()) // 2, 440, self.quit_img, 1)
+
+
+
+    def eventos(self, eventos):
+        super().eventos(eventos)
+        if self.botao_play.click():
+            self.mudar_tela(Primeira_fase)
+
+        if self.botao_settings.click():
+            self.mudar_tela(Controles)
+
+        if self.botao_exit.click():
             pg.quit()
             exit()
 
-        for event in pg.event.get():
-
-            if event.type == QUIT:
-                pg.quit()
-                exit()
-
-        pg.display.update()
+    def desenhar(self):
+        super().desenhar()
+        self.botao_play.desenhar_botao(self.tela)
+        self.botao_settings.desenhar_botao(self.tela)
+        self.botao_exit.desenhar_botao(self.tela)
 
 
-def primeira_fase(tela):
-    imagem_morreu = pg.image.load('imagens/morreu.png').convert_alpha()
-    imagem_passou = pg.image.load('imagens/passou.png').convert_alpha()
 
-    while True:
-        tela.fill(PRETO)
+class Primeira_fase(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
 
-        mensagem = 'PRIMEIRA FASE'
-        fonte = pg.font.SysFont('arial', 20, True, True)
-        mensagem_formatada = fonte.render(mensagem, True, BRANCO)
-        ret_mensagem = mensagem_formatada.get_rect()
-        ret_mensagem.center = (LARGURA//2, 600)
-        tela.blit(mensagem_formatada, ret_mensagem)
+        #imagens
+        self.imagem_morreu = pg.image.load('imagens/morreu.png').convert_alpha()
+        self.imagem_passou = pg.image.load('imagens/passou.png').convert_alpha()
+        #instanciando os botoes
+        self.botao_passou = Botao((LARGURA - self.imagem_passou.get_width()) // 2, 100, self.imagem_passou, 1)
+        self.botao_morreu = Botao((LARGURA - self.imagem_morreu.get_width()) // 2, 300, self.imagem_morreu, 1)
 
-        # instanciando os botoes
-        botao_passou = Botao(
-            (LARGURA - imagem_passou.get_width())//2, 100, imagem_passou, 1)
-        botao_morreu = Botao(
-            (LARGURA - imagem_morreu.get_width())//2, 300, imagem_morreu, 1)
+    def eventos(self, eventos):
+        super().eventos(eventos)
 
-        botao_passou.desenhar_botao(tela)
-        botao_morreu.desenhar_botao(tela)
+        if self.botao_passou.click():
+            self.mudar_tela(Segunda_fase)
 
-        if botao_passou.click():
-            segunda_fase(tela)
-        if botao_morreu.click():
-            morte(tela)
+        if self.botao_morreu.click():
+            self.mudar_tela(Morte)
 
-        for event in pg.event.get():
-
-            if event.type == QUIT:
-                pg.quit()
-                exit()
-
-        pg.display.update()
+    def desenhar(self):
+        super().desenhar()
+        self.desenhar_texto('PRIMEIRA FASE', PRETO, 480, 500)
+        self.botao_morreu.desenhar_botao(self.tela)
+        self.botao_passou.desenhar_botao(self.tela)
 
 
-def segunda_fase(tela):
-    imagem_morreu = pg.image.load('imagens/morreu.png').convert_alpha()
-    imagem_passou = pg.image.load('imagens/passou.png').convert_alpha()
+class Segunda_fase(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
 
-    while True:
-        tela.fill(PRETO)
+        #imagens
+        self.imagem_morreu = pg.image.load('imagens/morreu.png').convert_alpha()
+        self.imagem_passou = pg.image.load('imagens/passou.png').convert_alpha()
+        #instanciando os botoes
+        self.botao_passou = Botao((LARGURA - self.imagem_passou.get_width()) // 2, 200, self.imagem_passou, 1)
+        self.botao_morreu = Botao((LARGURA - self.imagem_morreu.get_width()) // 2, 300, self.imagem_morreu, 1)
 
-        mensagem = 'SEGUNDA FASE'
-        fonte = pg.font.SysFont('arial', 20, True, True)
-        mensagem_formatada = fonte.render(mensagem, True, BRANCO)
-        ret_mensagem = mensagem_formatada.get_rect()
-        ret_mensagem.center = (LARGURA//2, 600)
-        tela.blit(mensagem_formatada, ret_mensagem)
+    def eventos(self, eventos):
+        super().eventos(eventos)
 
-        # instanciando os botoes
-        botao_passou = Botao(
-            (LARGURA - imagem_passou.get_width())//2, 200, imagem_passou, 1)
-        botao_morreu = Botao(
-            (LARGURA - imagem_morreu.get_width())//2, 300, imagem_morreu, 1)
+        if self.botao_passou.click():
+            self.mudar_tela(Final_jogo)
 
-        botao_passou.desenhar_botao(tela)
-        botao_morreu.desenhar_botao(tela)
+        if self.botao_morreu.click():
+            self.mudar_tela(Morte)
 
-        if botao_passou.click():
-            final_jogo(tela)
-        if botao_morreu.click():
-            morte(tela)
+    def desenhar(self):
+        super().desenhar()
+        self.desenhar_texto('SEGUNDA FASE', PRETO, 480, 550)
+        self.botao_morreu.desenhar_botao(self.tela)
+        self.botao_passou.desenhar_botao(self.tela)
 
-        for event in pg.event.get():
+class Morte(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
 
-            if event.type == QUIT:
-                pg.quit()
-                exit()
+    def eventos(self, eventos):
+        super().eventos(eventos)
+        for event in eventos:
+            if event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    self.mudar_tela(Primeira_fase)
+                if event.key == K_ESCAPE:
+                    self.mudar_tela(Tela_inicial)
 
-        pg.display.update()
+    def desenhar(self):
+        super().desenhar()
+        self.desenhar_texto('Você morreu! Aperte espaço para recomeçar ou esc para ir para a tela inicial.', PRETO, 480, 500)
 
 
-def morte(tela):
+class Final_jogo(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
 
-    while True:
-        tela.fill(PRETO)
 
-        mensagem = 'Você morreu! aperte espaço para recomeçar'
-        fonte = pg.font.SysFont('arial', 20, True, True)
-        mensagem_formatada = fonte.render(mensagem, True, BRANCO)
-        ret_mensagem = mensagem_formatada.get_rect()
-        ret_mensagem.center = (LARGURA//2, 600)
-        tela.blit(mensagem_formatada, ret_mensagem)
+    def eventos(self, eventos):
+        super().eventos(eventos)
 
-        for event in pg.event.get():
-            if event.type == QUIT:
-                pg.quit()
-                exit()
+        for event in eventos:
 
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:
-                    primeira_fase(tela)
-
-        pg.display.update()
-
-
-def final_jogo(tela):
-
-    while True:
-        tela.fill(PRETO)
-        mensagem = 'Parabéns, você terminou o jogo! Aperte espaço para voltar para a tela inicial ou esc para sair'
-        fonte = pg.font.SysFont('arial', 20, True, True)
-        mensagem_formatada = fonte.render(mensagem, True, BRANCO)
-        ret_mensagem = mensagem_formatada.get_rect()
-        ret_mensagem.center = (LARGURA//2, 600)
-        tela.blit(mensagem_formatada, ret_mensagem)
-
-        for event in pg.event.get():
-            if event.type == QUIT:
-                pg.quit()
-                exit()
-
-            if event.type == KEYDOWN:
-                if event.key == K_SPACE:
-                    tela_inicial(tela)
-
+                    self.mudar_tela(Tela_inicial)
+                
                 if event.key == K_ESCAPE:
                     pg.quit()
                     exit()
 
-        pg.display.update()
+
+    def desenhar(self):
+        super().desenhar()
+        self.desenhar_texto('Parabéns! Aperte espaço para voltar à tela inicial ou ESC para sair', PRETO, 480, 500)
 
 
-def controles(tela):
-    while True:
-        tela.fill(PRETO)
-        mensagem = 'Botões: [botoes]. Aperte espaço para voltar à tela inicial'
-        fonte = pg.font.SysFont('arial', 20, True, True)
-        mensagem_formatada = fonte.render(mensagem, True, BRANCO)
-        ret_mensagem = mensagem_formatada.get_rect()
-        ret_mensagem.center = (LARGURA//2, 600)
-        tela.blit(mensagem_formatada, ret_mensagem)
+class Controles(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
 
-        for event in pg.event.get():
-            if event.type == QUIT:
-                pg.quit()
-                exit()
+    def eventos(self, eventos):
+        super().eventos(eventos)
 
-            if event.type == KEYDOWN:
-                if event.key == K_SPACE:
-                    tela_inicial(tela)
+        for event in eventos:
+            if event.type == KEYDOWN and event.key == K_SPACE:
+                self.mudar_tela(Tela_inicial)
 
-        pg.display.update()
+    def desenhar(self):
+        super().desenhar()
+        self.desenhar_texto('Botões: [botoes]. Aperte espaço para voltar à tela inicial', PRETO, 480, 500)
+
+
