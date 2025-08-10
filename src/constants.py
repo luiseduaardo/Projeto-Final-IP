@@ -6,7 +6,7 @@ ALTURA = 640
 FPS = 60
 
 # infos da janela
-TITULO_JOGO = "xxxxx"
+TITULO_JOGO = "Stefans Reise"
 IMAGEM_ICONE = "xxxx.png"
 
 # cores em tupla RGB

@@ -49,21 +49,21 @@ class Tela_inicial(Tela_base):
         super().__init__(game)
         self.botoes_carregados = True
 
-        self.fundo = pg.image.load('imagens/fundo_inicio.png').convert()
+        self.fundo = pg.image.load('imagens/telas/fundo_inicio.png').convert()
 
-        jogar_img = pg.image.load('imagens/botao_jogar.png').convert_alpha()
+        jogar_img = pg.image.load('imagens/telas/botao_jogar.png').convert_alpha()
         self.jogar_img_redimensionada = pg.transform.scale(jogar_img, (LARGURA_BOTAO_JOGAR, ALTURA_BOTAO_JOGAR))
         self.botao_jogar = Botao(
             (LARGURA - self.jogar_img_redimensionada.get_width()) // 2, 245, self.jogar_img_redimensionada, 1
         )
 
-        controles_img = pg.image.load('imagens/botao_controles.png').convert_alpha()
+        controles_img = pg.image.load('imagens/telas/botao_controles.png').convert_alpha()
         self.controles_img_redimensionada = pg.transform.scale(controles_img, (LARGURA_BOTAO_CONTROLE, ALTURA_BOTAO_CONTROLE))
         self.botao_controles = Botao(
             (LARGURA - self.controles_img_redimensionada.get_width()) // 2, 355, self.controles_img_redimensionada, 1
         )
 
-        sair_img = pg.image.load('imagens/botao_sair.png').convert_alpha()
+        sair_img = pg.image.load('imagens/telas/botao_sair.png').convert_alpha()
         self.sair_img_redimensionada = pg.transform.scale(sair_img, (LARGURA_BOTAO_SAIR, ALTURA_BOTAO_SAIR))
         self.botao_sair = Botao(
             (LARGURA - self.sair_img_redimensionada.get_width()) // 2, 460, self.sair_img_redimensionada, 1
@@ -205,7 +205,7 @@ class Controles(Tela_base):
     def __init__(self, game):
         super().__init__(game)
 
-        self.tela_controles = pg.image.load('imagens/tela_controles.png').convert()
+        self.tela_controles = pg.image.load('imagens/telas/tela_controles.png').convert()
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -221,7 +221,7 @@ class Controles(Tela_base):
 class Morte(Tela_base):
     def __init__(self, game):
         super().__init__(game)
-        self.tela_derrota = pg.image.load('imagens/tela_derrota.png').convert()
+        self.tela_derrota = pg.image.load('imagens/telas/tela_derrota.png').convert()
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -239,7 +239,7 @@ class Morte(Tela_base):
 class Final_jogo(Tela_base):
     def __init__(self, game):
         super().__init__(game)
-        self.tela_vitoria = pg.image.load('imagens/tela_vitoria.png').convert()
+        self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 
     def eventos(self, eventos):
         super().eventos(eventos)
