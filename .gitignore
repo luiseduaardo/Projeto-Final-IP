@@ -67,16 +67,6 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-# PyGame assets
-assets/
-*.wav
-*.mp3
-*.ogg
-*.png
-*.jpg
-*.jpeg
-*.bmp
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
