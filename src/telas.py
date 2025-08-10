@@ -40,21 +40,21 @@ class Tela_base:
     def update(self): #atualizaçao dos sprites
         self.todos_sprites.update()
     
+
     def desenhar(self):
         self.tela.fill(BRANCO)
         self.todos_sprites.draw(self.tela)
+
 
     def coletar_joia(self, tipo_joia):
         print(f'coletou a {tipo_joia}')
         self.joias_coletadas.add(tipo_joia)
         self.checar_condicao_vitoria()
 
+
     def adicionar_tempo(self, segundos):
         print(f'coletou o clock e adicionou {segundos} segundos')
         self.tempo_restante += segundos
-
-    def checar_condicao_vitoria(self):
-        pass
 
 
     def criar_plataforma(self, largura, altura, cor, x, y, e_plataforma):
@@ -114,13 +114,13 @@ class Primeira_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
 
-        #chao
+        #sprite chao
         self.criar_plataforma(LARGURA, 20, VERDE, LARGURA//2, ALTURA-40, True)
-        #outras plataformas
+        #sprites outras plataformas
         self.criar_plataforma(70, 20, AZUL, LARGURA//2, ALTURA-100, True)
         self.criar_plataforma(70, 20, AZUL, LARGURA//2 + 100, ALTURA-160, True)
 
-        #sprite que mata
+        #sprites de mudança de tela
         self.plataforma_morte = self.criar_plataforma(50, 50, PRETO, LARGURA//2 + 200, ALTURA - 100, False)
         self.plataforma_passa = self.criar_plataforma(50, 50, LARANJA, LARGURA//2 - 200, ALTURA - 100, False)
 
@@ -165,13 +165,13 @@ class Segunda_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
 
-        #chao
+        #sprite chao
         self.criar_plataforma(LARGURA, 20, VERDE, LARGURA//2, ALTURA-40, True)
-        #outras plataformas
+        #sprites outras plataformas
         self.criar_plataforma(70, 20, AZUL, LARGURA//2, ALTURA-100, True)
         self.criar_plataforma(70, 20, AZUL, LARGURA//2 + -100, ALTURA-160, True)
 
-        #sprite que mata
+        #sprites de mudança de tela
         self.plataforma_morte = self.criar_plataforma(50, 50, PRETO, LARGURA//2 + 250, ALTURA - 100, False)
         self.plataforma_passa = self.criar_plataforma(50, 50, LARANJA, LARGURA//2 - 250, ALTURA - 100, False)
 
@@ -270,6 +270,7 @@ class Controles(Tela_base):
 
     def desenhar(self):
         super().desenhar()
-        self.desenhar_texto('Botões: [botoes]. Aperte espaço para voltar à tela inicial', PRETO, 480, 500)
+        self.desenhar_texto('Botões: A e D para andar, W ou ESPAÇO para pular', PRETO, 480, 300)
+        self.desenhar_texto('Aperte espaço para voltar à tela inicial', PRETO, 480, 500)
         pg.display.flip()
 
