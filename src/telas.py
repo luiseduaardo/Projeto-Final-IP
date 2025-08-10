@@ -120,12 +120,19 @@ class Primeira_fase(Tela_base):
         self.game.coletaveis.add(coletaveis_fase1)
         self.game.todos_sprites.add(coletaveis_fase1)
 
+        botao_morrer_img = pg.Surface((80,30))
+        botao_morrer_img.fill(VERMELHO)
+        self.botao_morrer = Botao(10, 10, botao_morrer_img, 1)
+
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
                     self.jogador.pular()
+        
+        if self.botao_morrer.click():
+            self.mudar_tela(Morte)
 
     def update(self):
         self.game.todos_sprites.update()
@@ -140,6 +147,9 @@ class Primeira_fase(Tela_base):
     def desenhar(self):
         super().desenhar()
         self.game.todos_sprites.draw(self.tela)
+
+        self.botao_morrer.desenhar_botao(self.tela)
+        self.desenhar_texto('morrer', BRANCO, 50, 25)
 
 
 # --- Segunda Fase (Restaurada) ---
@@ -166,6 +176,10 @@ class Segunda_fase(Tela_base):
         coletavel_vitoria = Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela')
         self.game.coletaveis.add(coletavel_vitoria)
         self.game.todos_sprites.add(coletavel_vitoria)
+
+        botao_morrer_img = pg.Surface((80,30))
+        botao_morrer_img.fill(VERMELHO)
+        self.botao_morrer = Botao(10, 10, botao_morrer_img, 1)
         
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -173,6 +187,9 @@ class Segunda_fase(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
                     self.jogador.pular()
+        
+        if self.botao_morrer.click():
+            self.mudar_tela(Morte)
 
     def update(self):
         self.game.todos_sprites.update()
@@ -186,6 +203,9 @@ class Segunda_fase(Tela_base):
     def desenhar(self):
         super().desenhar()
         self.game.todos_sprites.draw(self.tela)
+
+        self.botao_morrer.desenhar_botao(self.tela)
+        self.desenhar_texto('morrer', BRANCO, 50, 25)
 
 
 # --- Tela de Controles (Restaurada) ---

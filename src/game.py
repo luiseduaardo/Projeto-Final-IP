@@ -1,7 +1,7 @@
 import pygame as pg
 from pygame.locals import *
 from constants import *
-from telas import Tela_inicial # Apenas a tela inicial precisa ser importada aqui
+from telas import Tela_inicial
 from sys import exit
 
 class Game:

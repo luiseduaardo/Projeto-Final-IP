@@ -33,5 +33,5 @@ TEMPO_INICIAL = 180
 
 # atributos dos coletáveis
 TEMPO_CLOCK = 15
-TEMPO_BOOST = 7 * 1000 # em milisegundos
+TEMPO_BOOST = 5 * 1000 # em milisegundos
 ACELERACAO_BOOST = 1
