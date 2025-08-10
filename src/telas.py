@@ -3,12 +3,10 @@ from pygame.locals import *
 from constants import *
 from botoes import Botao
 from sys import exit
-
-# --- Novas importações necessárias para as fases ---
 from stefan import Stefan
 from coletaveis import Coletavel
 
-# Definindo a classe Plataforma aqui para manter tudo organizado
+
 class Plataforma(pg.sprite.Sprite):
     def __init__(self, x, y, largura, altura, cor=LARANJA):
         super().__init__()
@@ -16,7 +14,7 @@ class Plataforma(pg.sprite.Sprite):
         self.image.fill(cor)
         self.rect = self.image.get_rect(topleft=(x, y))
 
-# --- Classe Base (da branch de telas) ---
+
 class Tela_base:
     def __init__(self, game):
         self.game = game
@@ -34,7 +32,6 @@ class Tela_base:
         self.tela.blit(mensagem_formatada, ret_mensagem)
 
     def mudar_tela(self, nova_tela_classe):
-        # Limpa os sprites da tela anterior antes de carregar a nova
         self.game.todos_sprites.empty()
         self.game.plataformas.empty()
         self.game.coletaveis.empty()
@@ -47,25 +44,18 @@ class Tela_base:
         self.tela.fill(PRETO)
 
 
-# --- Tela Inicial com todos os botões ---
 class Tela_inicial(Tela_base):
     def __init__(self, game):
         super().__init__(game)
         self.botoes_carregados = True
-        try:
-            # Carregando todas as imagens dos botões
-            play_img = pg.image.load('imagens/play.png').convert_alpha()
-            settings_img = pg.image.load('imagens/settings.png').convert_alpha()
-            quit_img = pg.image.load('imagens/quit.png').convert_alpha()
-            
-            # Instanciando todos os botões
-            self.botao_play = Botao((LARGURA - play_img.get_width()) // 2, 100, play_img, 1)
-            self.botao_settings = Botao((LARGURA - settings_img.get_width()) // 2, 270, settings_img, 1)
-            self.botao_exit = Botao((LARGURA - quit_img.get_width()) // 2, 440, quit_img, 1)
-        except pg.error:
-            # Jogo não quebra se as imagens não forem encontradas
-            print("Aviso: Imagem de botão não encontrada. Usando texto como alternativa.")
-            self.botoes_carregados = False
+        play_img = pg.image.load('../imagens/play.png').convert_alpha()
+        settings_img = pg.image.load('../imagens/settings.png').convert_alpha()
+        quit_img = pg.image.load('../imagens/quit.png').convert_alpha()
+        
+
+        self.botao_play = Botao((LARGURA - play_img.get_width()) // 2, 100, play_img, 1)
+        self.botao_settings = Botao((LARGURA - settings_img.get_width()) // 2, 270, settings_img, 1)
+        self.botao_exit = Botao((LARGURA - quit_img.get_width()) // 2, 440, quit_img, 1)
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -75,13 +65,8 @@ class Tela_inicial(Tela_base):
             if self.botao_settings.click():
                 self.mudar_tela(Controles)
             if self.botao_exit.click():
-                self.game.rodando = False # Encerra o jogo
-        else: # Lógica alternativa de clique com o mouse
-            for event in eventos:
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    if 100 < event.pos[1] < 200: self.mudar_tela(Primeira_fase)
-                    elif 270 < event.pos[1] < 370: self.mudar_tela(Controles)
-                    elif 440 < event.pos[1] < 540: self.game.rodando = False
+                self.game.rodando = False
+
     
     def desenhar(self):
         self.tela.fill(BRANCO)
@@ -89,17 +74,16 @@ class Tela_inicial(Tela_base):
             self.botao_play.desenhar_botao(self.tela)
             self.botao_settings.desenhar_botao(self.tela)
             self.botao_exit.desenhar_botao(self.tela)
-        else: # Desenha texto se as imagens falharem
+        else:
             self.desenhar_texto("JOGAR", PRETO, LARGURA/2, 150)
             self.desenhar_texto("CONTROLES", PRETO, LARGURA/2, 320)
             self.desenhar_texto("SAIR", PRETO, LARGURA/2, 490)
 
 
-# --- Tela da Primeira Fase (Integrada) ---
+
 class Primeira_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
-        # Reseta o conjunto de joias coletadas para a nova fase
         self.game.joias_coletadas.clear()
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
@@ -139,8 +123,12 @@ class Primeira_fase(Tela_base):
         if self.jogador.rect.top > ALTURA:
             self.mudar_tela(Morte)
         
-        # Condição de vitória: coletou todas as joias da fase
-        joias_na_fase = [s for s in self.game.coletaveis if 'joia' in s.tipo]
+        joias_na_fase = []
+
+        for s in self.game.coletaveis:
+            if 'joia' in s.tipo:
+                joias_na_fase.append(s)
+
         if not joias_na_fase:
             self.mudar_tela(Segunda_fase)
 
@@ -152,11 +140,9 @@ class Primeira_fase(Tela_base):
         self.desenhar_texto('morrer', BRANCO, 50, 25)
 
 
-# --- Segunda Fase (Restaurada) ---
 class Segunda_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
-        # Exemplo de como uma segunda fase pode ser construída
         self.game.joias_coletadas.clear()
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
@@ -198,7 +184,7 @@ class Segunda_fase(Tela_base):
         
         joias_na_fase = [s for s in self.game.coletaveis if 'joia' in s.tipo]
         if not joias_na_fase:
-            self.mudar_tela(Final_jogo) # Vai para a tela de vitória
+            self.mudar_tela(Final_jogo)
 
     def desenhar(self):
         super().desenhar()
@@ -208,7 +194,6 @@ class Segunda_fase(Tela_base):
         self.desenhar_texto('morrer', BRANCO, 50, 25)
 
 
-# --- Tela de Controles (Restaurada) ---
 class Controles(Tela_base):
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -224,35 +209,33 @@ class Controles(Tela_base):
         self.desenhar_texto('Pressione ESPAÇO ou ESC para voltar.', PRETO, LARGURA/2, 400)
 
 
-# --- Tela de Morte (Restaurada) ---
 class Morte(Tela_base):
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
             if event.type == pg.KEYDOWN:
-                if event.key == K_SPACE:
+                if event.key == pg.K_r:
                     self.mudar_tela(Primeira_fase)
-                if event.key == K_ESCAPE:
+                if event.key == pg.K_m:
                     self.mudar_tela(Tela_inicial)
 
     def desenhar(self):
         self.tela.fill(VERMELHO)
         self.desenhar_texto('Você morreu!', BRANCO, LARGURA/2, ALTURA/2 - 50)
-        self.desenhar_texto('Aperte ESPAÇO para recomeçar ou ESC para voltar ao menu.', BRANCO, LARGURA/2, ALTURA/2)
+        self.desenhar_texto('Aperte R para recomeçar ou M para voltar ao menu.', BRANCO, LARGURA/2, ALTURA/2)
 
 
-# --- Tela de Vitória (Restaurada como Final_jogo) ---
 class Final_jogo(Tela_base):
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
             if event.type == pg.KEYDOWN:
-                if event.key == K_SPACE:
+                if event.key == pg.K_r:
+                    self.mudar_tela(Primeira_fase)
+                if event.key == pg.K_m:
                     self.mudar_tela(Tela_inicial)
-                if event.key == K_ESCAPE:
-                    self.game.rodando = False
 
     def desenhar(self):
         self.tela.fill(AZUL)
         self.desenhar_texto('Parabéns, você venceu!', BRANCO, LARGURA/2, ALTURA/2 - 50)
-        self.desenhar_texto('Aperte ESPAÇO para voltar ao menu ou ESC para sair.', BRANCO, LARGURA/2, ALTURA/2)
+        self.desenhar_texto('Aperte R para recomeçar ou M para voltar ao menu.', BRANCO, LARGURA/2, ALTURA/2)
