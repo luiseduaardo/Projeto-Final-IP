@@ -48,37 +48,44 @@ class Tela_inicial(Tela_base):
     def __init__(self, game):
         super().__init__(game)
         self.botoes_carregados = True
-        play_img = pg.image.load('../imagens/play.png').convert_alpha()
-        settings_img = pg.image.load('../imagens/settings.png').convert_alpha()
-        quit_img = pg.image.load('../imagens/quit.png').convert_alpha()
-        
 
-        self.botao_play = Botao((LARGURA - play_img.get_width()) // 2, 100, play_img, 1)
-        self.botao_settings = Botao((LARGURA - settings_img.get_width()) // 2, 270, settings_img, 1)
-        self.botao_exit = Botao((LARGURA - quit_img.get_width()) // 2, 440, quit_img, 1)
+        self.fundo = pg.image.load('imagens/fundo_inicio.png').convert()
+
+        jogar_img = pg.image.load('imagens/botao_jogar.png').convert_alpha()
+        self.jogar_img_redimensionada = pg.transform.scale(jogar_img, (LARGURA_BOTAO_JOGAR, ALTURA_BOTAO_JOGAR))
+        self.botao_jogar = Botao(
+            (LARGURA - self.jogar_img_redimensionada.get_width()) // 2, 245, self.jogar_img_redimensionada, 1
+        )
+
+        controles_img = pg.image.load('imagens/botao_controles.png').convert_alpha()
+        self.controles_img_redimensionada = pg.transform.scale(controles_img, (LARGURA_BOTAO_CONTROLE, ALTURA_BOTAO_CONTROLE))
+        self.botao_controles = Botao(
+            (LARGURA - self.controles_img_redimensionada.get_width()) // 2, 355, self.controles_img_redimensionada, 1
+        )
+
+        sair_img = pg.image.load('imagens/botao_sair.png').convert_alpha()
+        self.sair_img_redimensionada = pg.transform.scale(sair_img, (LARGURA_BOTAO_SAIR, ALTURA_BOTAO_SAIR))
+        self.botao_sair = Botao(
+            (LARGURA - self.sair_img_redimensionada.get_width()) // 2, 460, self.sair_img_redimensionada, 1
+        )
 
     def eventos(self, eventos):
         super().eventos(eventos)
         if self.botoes_carregados:
-            if self.botao_play.click():
+            if self.botao_jogar.click():
                 self.mudar_tela(Primeira_fase)
-            if self.botao_settings.click():
+            if self.botao_controles.click():
                 self.mudar_tela(Controles)
-            if self.botao_exit.click():
+            if self.botao_sair.click():
                 self.game.rodando = False
 
     
     def desenhar(self):
-        self.tela.fill(BRANCO)
-        if self.botoes_carregados:
-            self.botao_play.desenhar_botao(self.tela)
-            self.botao_settings.desenhar_botao(self.tela)
-            self.botao_exit.desenhar_botao(self.tela)
-        else:
-            self.desenhar_texto("JOGAR", PRETO, LARGURA/2, 150)
-            self.desenhar_texto("CONTROLES", PRETO, LARGURA/2, 320)
-            self.desenhar_texto("SAIR", PRETO, LARGURA/2, 490)
+        self.tela.blit(self.fundo, (0, 0))
 
+        self.botao_jogar.desenhar_botao(self.tela)
+        self.botao_controles.desenhar_botao(self.tela)
+        self.botao_sair.desenhar_botao(self.tela)
 
 
 class Primeira_fase(Tela_base):
@@ -195,21 +202,27 @@ class Segunda_fase(Tela_base):
 
 
 class Controles(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
+
+        self.tela_controles = pg.image.load('imagens/tela_controles.png').convert()
+
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
             if event.type == pg.KEYDOWN:
-                if event.key in (pg.K_SPACE, pg.K_ESCAPE):
+                if event.key in (pg.K_ESCAPE, pg.K_m):
                     self.mudar_tela(Tela_inicial)
 
     def desenhar(self):
-        self.tela.fill(BRANCO)
-        self.desenhar_texto('Setas Esquerda/Direita ou A/D para mover.', PRETO, LARGURA/2, 200)
-        self.desenhar_texto('Barra de Espaço, Seta para Cima ou W para pular.', PRETO, LARGURA/2, 250)
-        self.desenhar_texto('Pressione ESPAÇO ou ESC para voltar.', PRETO, LARGURA/2, 400)
+        self.tela.blit(self.tela_controles, (0, 0))
 
 
 class Morte(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
+        self.tela_derrota = pg.image.load('imagens/tela_derrota.png').convert()
+
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
@@ -220,12 +233,14 @@ class Morte(Tela_base):
                     self.mudar_tela(Tela_inicial)
 
     def desenhar(self):
-        self.tela.fill(VERMELHO)
-        self.desenhar_texto('Você morreu!', BRANCO, LARGURA/2, ALTURA/2 - 50)
-        self.desenhar_texto('Aperte R para recomeçar ou M para voltar ao menu.', BRANCO, LARGURA/2, ALTURA/2)
+        self.tela.blit(self.tela_derrota, (0, 0))
 
 
 class Final_jogo(Tela_base):
+    def __init__(self, game):
+        super().__init__(game)
+        self.tela_vitoria = pg.image.load('imagens/tela_vitoria.png').convert()
+
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
@@ -236,6 +251,4 @@ class Final_jogo(Tela_base):
                     self.mudar_tela(Tela_inicial)
 
     def desenhar(self):
-        self.tela.fill(AZUL)
-        self.desenhar_texto('Parabéns, você venceu!', BRANCO, LARGURA/2, ALTURA/2 - 50)
-        self.desenhar_texto('Aperte R para recomeçar ou M para voltar ao menu.', BRANCO, LARGURA/2, ALTURA/2)
+        self.tela.blit(self.tela_vitoria, (0, 0))
