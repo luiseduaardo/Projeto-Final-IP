@@ -6,8 +6,9 @@ class Stefan(pg.sprite.Sprite):
         super().__init__()
         self.game = game
 
-        self.image = pg.Surface((40, 40))
-        self.image.fill(VERMELHO)
+        #self.image = pg.Surface((40, 40))
+        self.image = pg.image.load("imagens\sprites\stefanparado.png")
+        
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x, pos_y)
 
