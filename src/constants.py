@@ -6,7 +6,7 @@ ALTURA = 640
 FPS = 60
 
 # infos da janela
-TITULO_JOGO = "xxxxx"
+TITULO_JOGO = "Stefans Reise"
 IMAGEM_ICONE = "xxxx.png"
 
 # cores em tupla RGB
@@ -33,5 +33,15 @@ TEMPO_INICIAL = 180
 
 # atributos dos coletáveis
 TEMPO_CLOCK = 15
-TEMPO_BOOST = 7 * 1000 # em milisegundos
+TEMPO_BOOST = 5 * 1000 # em milisegundos
 ACELERACAO_BOOST = 1
+
+# botões da tela inicial
+LARGURA_BOTAO_JOGAR = 300
+ALTURA_BOTAO_JOGAR = 90
+
+LARGURA_BOTAO_CONTROLE = 280
+ALTURA_BOTAO_CONTROLE = 80
+
+LARGURA_BOTAO_SAIR = 270
+ALTURA_BOTAO_SAIR = 75

@@ -38,6 +38,13 @@ class Stefan(pg.sprite.Sprite):
         self.aceleracao.x += self.velocidade.x * ATRITO_STEFAN
         self.velocidade.x += self.aceleracao.x
         self.posicao.x += self.velocidade.x + 0.5 * self.aceleracao.x
+
+        # bloqueia o movimento quando chega na borda
+        if self.posicao.x > LARGURA - (self.rect.width / 2):
+            self.posicao.x = LARGURA - (self.rect.width / 2)
+        if self.posicao.x < (self.rect.width / 2):
+            self.posicao.x = (self.rect.width / 2)
+
         self.rect.midbottom = (self.posicao.x, self.rect.midbottom[1])
         
         colisoes_x = pg.sprite.spritecollide(self, self.game.plataformas, False)
