@@ -6,6 +6,8 @@ from sys import exit
 from stefan import Stefan
 from coletaveis import Coletavel
 
+import mapa
+
 
 class Plataforma(pg.sprite.Sprite):
     def __init__(self, x, y, largura, altura, cor=LARANJA):
@@ -96,11 +98,14 @@ class Primeira_fase(Tela_base):
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
         self.game.todos_sprites.add(self.jogador)
 
+        self.mundo = mapa.desehar_mapa(FASE1)
+
         plataformas_fase1 = [
             Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE), # Chão
             Plataforma(200, ALTURA - 110, 150, 20),
             Plataforma(450, ALTURA - 230, 150, 20)
         ]
+        
         self.game.plataformas.add(plataformas_fase1)
         self.game.todos_sprites.add(plataformas_fase1)
         
@@ -141,8 +146,14 @@ class Primeira_fase(Tela_base):
 
     def desenhar(self):
         super().desenhar()
+        
+        self.tela.fill(ROXO)
+        
+        self.tela.blit(self.mundo[0], (0, 0))
+        
+        
         self.game.todos_sprites.draw(self.tela)
-
+        
         self.botao_morrer.desenhar_botao(self.tela)
         self.desenhar_texto('morrer', BRANCO, 50, 25)
 
@@ -151,6 +162,8 @@ class Segunda_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
         self.game.joias_coletadas.clear()
+        
+        self.mundo = mapa.desehar_mapa(FASE2)
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
         self.game.todos_sprites.add(self.jogador)
@@ -195,8 +208,9 @@ class Segunda_fase(Tela_base):
 
     def desenhar(self):
         super().desenhar()
+        self.tela.fill(ROXO)
+        self.tela.blit(self.mundo[0], (0,0))
         self.game.todos_sprites.draw(self.tela)
-
         self.botao_morrer.desenhar_botao(self.tela)
         self.desenhar_texto('morrer', BRANCO, 50, 25)
 
