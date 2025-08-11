@@ -50,6 +50,10 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 - Criação de Sprites(1)
 [Magma]
 - Criação de Sprites(2)
+[jsfxr]
+- Efeitos Sonoros (SFX)
+[Youtube + Wav.ninja]
+- BGM/Música
 ```
 
 
