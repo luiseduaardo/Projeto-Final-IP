@@ -47,6 +47,11 @@ class Tela_base:
 class Tela_inicial(Tela_base):
     def __init__(self, game):
         super().__init__(game)
+        caminho_musica = 'sons/musica_menus.wav'
+
+        self.game.tocar_musica(caminho_musica)
+
+
         self.botoes_carregados = True
 
         self.fundo = pg.image.load('imagens/telas/fundo_inicio.png').convert()
@@ -54,19 +59,19 @@ class Tela_inicial(Tela_base):
         jogar_img = pg.image.load('imagens/telas/botao_jogar.png').convert_alpha()
         self.jogar_img_redimensionada = pg.transform.scale(jogar_img, (LARGURA_BOTAO_JOGAR, ALTURA_BOTAO_JOGAR))
         self.botao_jogar = Botao(
-            (LARGURA - self.jogar_img_redimensionada.get_width()) // 2, 245, self.jogar_img_redimensionada, 1
+            self.game, (LARGURA - self.jogar_img_redimensionada.get_width()) // 2, 245, self.jogar_img_redimensionada, 1
         )
 
         controles_img = pg.image.load('imagens/telas/botao_controles.png').convert_alpha()
         self.controles_img_redimensionada = pg.transform.scale(controles_img, (LARGURA_BOTAO_CONTROLE, ALTURA_BOTAO_CONTROLE))
         self.botao_controles = Botao(
-            (LARGURA - self.controles_img_redimensionada.get_width()) // 2, 355, self.controles_img_redimensionada, 1
+            self.game, (LARGURA - self.controles_img_redimensionada.get_width()) // 2, 355, self.controles_img_redimensionada, 1
         )
 
         sair_img = pg.image.load('imagens/telas/botao_sair.png').convert_alpha()
         self.sair_img_redimensionada = pg.transform.scale(sair_img, (LARGURA_BOTAO_SAIR, ALTURA_BOTAO_SAIR))
         self.botao_sair = Botao(
-            (LARGURA - self.sair_img_redimensionada.get_width()) // 2, 460, self.sair_img_redimensionada, 1
+            self.game, (LARGURA - self.sair_img_redimensionada.get_width()) // 2, 460, self.sair_img_redimensionada, 1
         )
 
     def eventos(self, eventos):
@@ -91,6 +96,11 @@ class Tela_inicial(Tela_base):
 class Primeira_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
+
+        caminho_musica = 'sons/musica_gameplay.wav'
+
+        self.game.tocar_musica(caminho_musica)
+
         self.game.joias_coletadas.clear()
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
@@ -113,7 +123,7 @@ class Primeira_fase(Tela_base):
 
         botao_morrer_img = pg.Surface((80,30))
         botao_morrer_img.fill(VERMELHO)
-        self.botao_morrer = Botao(10, 10, botao_morrer_img, 1)
+        self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -150,6 +160,11 @@ class Primeira_fase(Tela_base):
 class Segunda_fase(Tela_base):
     def __init__(self, game):
         super().__init__(game)
+
+        caminho_musica = 'sons/musica_gameplay.wav'
+
+        self.game.tocar_musica(caminho_musica)
+
         self.game.joias_coletadas.clear()
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
@@ -172,7 +187,7 @@ class Segunda_fase(Tela_base):
 
         botao_morrer_img = pg.Surface((80,30))
         botao_morrer_img.fill(VERMELHO)
-        self.botao_morrer = Botao(10, 10, botao_morrer_img, 1)
+        self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
         
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -205,6 +220,10 @@ class Controles(Tela_base):
     def __init__(self, game):
         super().__init__(game)
 
+        caminho_musica = 'sons/musica_menus.wav'
+
+        self.game.tocar_musica(caminho_musica)
+
         self.tela_controles = pg.image.load('imagens/telas/tela_controles.png').convert()
 
     def eventos(self, eventos):
@@ -213,6 +232,7 @@ class Controles(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_ESCAPE, pg.K_m):
                     self.mudar_tela(Tela_inicial)
+                    self.game.sfx_click.play()
 
     def desenhar(self):
         self.tela.blit(self.tela_controles, (0, 0))
@@ -221,6 +241,11 @@ class Controles(Tela_base):
 class Morte(Tela_base):
     def __init__(self, game):
         super().__init__(game)
+
+        caminho_musica = 'sons/musica_derrota.wav'
+
+        self.game.tocar_musica(caminho_musica)
+
         self.tela_derrota = pg.image.load('imagens/telas/tela_derrota.png').convert()
 
     def eventos(self, eventos):
@@ -229,8 +254,11 @@ class Morte(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_r:
                     self.mudar_tela(Primeira_fase)
+                    self.game.sfx_click.play()
                 if event.key == pg.K_m:
                     self.mudar_tela(Tela_inicial)
+                    self.game.sfx_click.play()
+                    
 
     def desenhar(self):
         self.tela.blit(self.tela_derrota, (0, 0))
@@ -239,6 +267,9 @@ class Morte(Tela_base):
 class Final_jogo(Tela_base):
     def __init__(self, game):
         super().__init__(game)
+
+        caminho_musica = 'sons/musica_vitoria.wav'
+
         self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 
     def eventos(self, eventos):
@@ -247,8 +278,10 @@ class Final_jogo(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_r:
                     self.mudar_tela(Primeira_fase)
+                    self.game.sfx_click.play()
                 if event.key == pg.K_m:
                     self.mudar_tela(Tela_inicial)
+                    self.game.sfx_click.play()
 
     def desenhar(self):
         self.tela.blit(self.tela_vitoria, (0, 0))
