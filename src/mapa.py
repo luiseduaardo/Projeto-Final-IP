@@ -1,144 +1,79 @@
 # =====================================================================
-#        esse arquivo tá ainda desconexo do resto do projeto
-#        até coloquei uma tela pra rodar e verificar a execução
+#                   o arquivo tá mais conectado agora
+#  mas ainda precisa melhor integração, com as colisões de plataformas
 # =====================================================================
 import pygame
-
-fase1 = [
-     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,-1,-1,-1,-1,-1,54,-1,-1,-1,-1,-1,-1,-1,54,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,54,-1,-1,-1,-1,-1,-1,-1,72,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,54,-1,-1,-1,-1,-1,-1,90,90,90,-1,-1,-1,-1,-1,-1,18,4,4,18,-1,-1,-1,0],
-[0,-1,-1,56,-1,-1,54,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,36,-1,-1,36,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,72,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,-1,-1,-1,0],
-[0,-1,-1,-1,-1,90,90,90,-1,37,38,39,40,-1,-1,-1,-1,37,38,39,40,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,-1,-1,-1,-1,0,0,0,0,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,18,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,18,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,36,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,36,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,0],
-[0,37,38,39,40,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,56,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,0,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,56,-1,0],
-[0,5,6,-1,-1,-1,18,4,4,4,18,-1,-1,-1,18,4,4,4,18,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,0],
-[0,21,22,-1,-1,-1,36,-1,-1,-1,36,-1,-1,-1,36,-1,-1,-1,36,-1,-1,37,38,39,40,0,-1,-1,-1,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
-]
-
-fase2 = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,-1,-1,-1,54,-1,-1,-1,-1,54,-1,-1,-1,-1,54,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,72,-1,-1,-1,-1,72,-1,-1,-1,-1,72,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,90,90,90,-1,-1,90,90,90,-1,-1,90,90,90,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0],
-[0,0,18,4,4,4,4,4,4,4,4,4,18,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0],
-[0,0,36,-1,44,44,44,44,44,44,44,-1,36,-1,-1,26,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,18,4,4,4,18,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,36,-1,44,-1,36,37,38,39,40,0,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,0,0,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,23,54,-1,0,-1,-1,-1,-1,18,4,4,4,4,18,-1,-1,18,4,4,4,18,-1,-1,-1,0],
-[0,-1,-1,-1,-1,76,72,-1,-1,0,-1,-1,-1,36,-1,-1,-1,-1,36,-1,-1,36,-1,-1,-1,36,-1,-1,-1,0],
-[0,-1,-1,-1,-1,90,90,90,-1,54,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,-1,-1,-1,-1,59,59,59,-1,54,23,23,-1,54,41,41,54,41,41,54,94,-1,54,23,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,54,94,-1,-1,72,41,41,54,41,-1,72,94,94,72,23,-1,-1,-1,-1,-1,0],
-[0,37,38,39,40,-1,-1,-1,-1,72,-1,-1,94,90,94,-1,72,94,94,90,94,94,90,94,-1,0,0,0,0,0],
-[0,0,0,0,0,-1,-1,-1,94,90,94,-1,-1,-1,-1,94,90,94,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,18,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,18,0],
-[0,36,-1,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,-1,36,0]
-]
-# matrizes pegas de arquivos .csv gerados pelo tiled
-
-
-# tem maneiras melhores de fazer isso mas assim é menos trabalho de entender oq ta acontecendo
-tela = pygame.display.set_mode((960, 640))
-plano = pygame.Surface((960, 640))
-sheet = pygame.image.load("imagens/spritesheet.png").convert_alpha()
-fundo = pygame.image.load("imagens/fundo_inicio.png") # PLACEHOLDER
-#fundo = pygame.Surface((960, 640))
-#fundo.fill("WHITE")
-
-coords = [0, 0]
-
-tile = pygame.Surface((32, 32))
-
-plano.blit(fundo, (0, 0))
-for linha in fase1: # TODO: mudar o sistema pra colocar fase_atual e pra pegar o estado de fase atual
-        #TODO: ajeitar a transparencia dos tiles  pq nao ta rodando
-        for item in linha:
-            blitar = True
-            
-            if item == 0: # chao
-                spritex = spritey = 0
-            
-            elif item == 4: # raios
-                spritex = 128
-                spritey = 0
-
-            elif item == 18: # bobina
-                 spritex = 0
-                 spritey = 32
-
-            elif item == 36: # centro da bobina
-                 spritex = 0
-                 spritey = 64
-
-            elif item == 37: #trampolim parte 1
-                 spritex = 32
-                 spritey = 64
-
-            elif item == 38: # trampolim parte 2
-                 spritex = 64
-                 spritey = 64
-
-            elif item == 39: # pt3
-                 spritex = 96
-                 spritey = 64
-            
-            elif item == 40: # pt4
-                 spritex = 128
-                 spritey = 64
+#cenario = pygame.sprite.Group()
+def desehar_mapa(fase):
+    # tem maneiras melhores de fazer isso mas assim é menos trabalho de entender oq ta acontecendo
+    plano = pygame.Surface((960, 640), pygame.SRCALPHA)
+    sheet = pygame.image.load("imagens/sprites/spritesheet2.png").convert_alpha()
+    coords = [0, 0]
+    plats = []
+    
+    for linha in fase: # TODO: mudar o sistema pra colocar fase_atual e pra pegar o estado de fase atual
+            #TODO: ajeitar a transparencia dos tiles  pq nao ta rodando
+            # SPRITESHEET2 TODO ajeitar placement das bobinas e dos trampolins
+            for item in linha:
+                blitar = True
+                 
+                if item == 0: # chao
+                    plats.append("yay")
+                    spritex = spritey = 0
                 
-            elif item == 54: # corrente
-                spritex = 0
-                spritey = 96
+                elif item == 4: # raios
+                    spritex = 128
+                    spritey = 0
 
-            elif item == 72: # fim da corrente
-                spritex = 0
-                spritey = 128
+                elif item == 18: # bobina
+                    # spritesheet2
+                    spritex = 192
+                    spritey = 0
+                    
+                    #spritesheet1
+                    # spritex = 0
+                    #spritey = 32
 
-            elif item == 90: # plataform aflutuante
-                spritex = 0
-                spritey = 160
+                elif item == 36: # centro da bobina
+                    #spritesheet2
+                    spritex = 160
+                    spritey = 0
+                    
+                    #spritesheet1
+                    #spritex = 0
+                    #spritey = 64
 
-            else:
-                 blitar = False
-            # esse blitar foi eu tentando ajeitar o problema da transparencia, n funcionou
+                elif item in [37, 38, 39, 40]: # trampolim
+                    spritex = ([37, 38, 39, 40].index(item) + 1)*32
+                    spritey = 64
+                    plats.append("aa")
+                    
+                elif item == 54: # corrente
+                    spritex = 0
+                    spritey = 96
+
+                elif item == 72: # fim da corrente
+                    spritex = 0
+                    spritey = 128
+
+                elif item == 90: # plataform aflutuante
+                    spritex = 0
+                    spritey = 160
+                    plats.append("yyy")
+                    
+                else:
+                    blitar = False
+                
+                if blitar:
+                    tile = pygame.Rect(spritex, spritey, 32, 32)
+ 
+                    plano.blit(sheet, coords, tile)
+
+                coords[0] += 32
             
-            if blitar:
-                tile.blit(sheet, (0, 0), (spritex, spritey, 32, 32))
-                plano.blit(tile, coords)
-            
-            tile = pygame.Surface((32, 32))
-            
-
-            coords[0] += 32
-        
-        coords[0] = 0
-        coords[1] += 32
+            coords[0] = 0
+            coords[1] += 32
+    
 
 
-
-rodand = True
-while rodand:
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            rodand = False
-
-    tela.blit(plano, (0, 0))
-
-    pygame.display.flip()
-
+    return plano, plats
