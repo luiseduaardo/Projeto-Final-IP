@@ -1,4 +1,7 @@
 # 🎮 | Nome do jogo
+```diff
+- !Stefans Reise! -
+```
 
 Na outrora pacífica cidade de Nandstadt, uma força caótica chamada Rauschen emergiu da instabilidade dos circuitos, estilhaçando a ordem e decompondo a poderosa Porta NAND — a entidade que regia toda a realidade — em quatro joias de poder: AND, OR, NOT e XOR. Agora, o mundo digital é um caos de chips queimados e comunicação interrompida. Assuma o controle do professor Stefan Blawid, o único herói com conhecimento para reverter o desastre. Montado em sua bicicleta de precisão, navegue pelos circuitos em ruínas em uma missão para encontrar as quatro jóias lógicas. Apenas reunindo-as e restaurando o poder universal da NAND, você poderá expurgar o ruído e salvar a cidade da desordem total.
 
@@ -33,10 +36,46 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 
 
 ## ⚙️ | Ferramentas utilizadas
+```ini
+[Pygame]
+- Estrutura do jogo incluindo códigos, lógica e implementação prática.
+[Trello]
+- Separação organizada de informações sobre o desenvolvimento do jogo.
+[Github]
+- Gerenciamento das diferentes versões do código e melhor organização do trabalho.
+[Tiled]
+- Produção dos mapas para o jogo.
+[Pixelorama]
+- Criação de Sprites(1)
+[Magma]
+- Criação de Sprites(2)
 
 
 ## 👥 | Divisão de tarefas
+```diff
+- Luís Eduardo:
+! Movimentação do Jogador;
+! Mecânica dos coletáveis;
+! Integração das telas;
+! Colisão Jogador.
 
+- João Vitor Figueiredo:
+! Criação das telas;
+! Integração das telas.
+
+- Nara Pontes:
+! Produção dos Sprites;
+! Playtester;
+! Implementação do Mapa;
+! Colisão Mapa.
+
+- Victor Siqueira:
+! Artes (UI, Hud, etc);
+! Level Design;
+
+- Eduardo Henrique:
+! Efeitos Sonoros.
+```
 
 ## 📚 | Conceitos utilizados
 
