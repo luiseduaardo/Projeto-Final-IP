@@ -22,6 +22,7 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 ├── 📂 assets/         # Recursos visuais
 ├── 📂 sounds/         # Músicas e SFX
 ├── 📂 src/            # Código-fonte do jogo
+|   ├── 📜 botoes.py       # Lógica dos botões
 |   ├── 📜 coletaveis.py   # Lógica dos itens coletáveis
 |   ├── 📜 constants.py    # Constantes (tamanho da tela, cores, FPS)
 |   ├── 📜 main.py         # Execução do jogo
@@ -75,7 +76,9 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 ! Level Design;
 
 - Eduardo Henrique:
-! Efeitos Sonoros.
+! Efeitos Sonoros;
+! Soundtrack;
+! Slides e Relatório (Trabalho Conjunto).
 ```
 
 ## 📚 | Conceitos utilizados
