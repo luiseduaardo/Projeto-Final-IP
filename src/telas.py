@@ -295,6 +295,8 @@ class Final_jogo(Tela_base):
 
         caminho_musica = 'sons/musica_vitoria.wav'
 
+        self.game.tocar_musica(caminho_musica)
+
         self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 
     def eventos(self, eventos):
