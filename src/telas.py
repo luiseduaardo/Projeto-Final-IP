@@ -185,11 +185,11 @@ class Segunda_fase(Tela_base):
 
         plataformas_fase2 = [
             Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE),
-            Plataforma(300, ALTURA - 150, 150, 20, ROXO),
-            Plataforma(225, ALTURA - 225, 150, 20, ROXO),
-            Plataforma(225, ALTURA - 380, 150, 20, ROXO),
-            Plataforma(150, ALTURA - 300, 150, 20, ROXO),
-            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20, ROXO)
+            Plataforma(300, ALTURA - 150, 150, 20, VERDE),
+            Plataforma(225, ALTURA - 225, 150, 20, VERDE),
+            Plataforma(225, ALTURA - 380, 150, 20, VERDE),
+            Plataforma(150, ALTURA - 300, 150, 20, VERDE),
+            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20, VERDE)
         ]
         self.game.plataformas.add(plataformas_fase2)
         self.game.todos_sprites.add(plataformas_fase2)
@@ -283,6 +283,8 @@ class Final_jogo(Tela_base):
         super().__init__(game)
 
         caminho_musica = 'sons/musica_vitoria.wav'
+
+        self.game.tocar_musica(caminho_musica, 0)
 
         self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 

@@ -8,7 +8,8 @@ class Stefan(pg.sprite.Sprite):
 
         #self.image = pg.Surface((40, 40))
         self.image = pg.image.load("imagens\sprites\stefanparado.png")
-        
+        self.image = pg.transform.scale(self.image, (50, 50))
+
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x, pos_y)
 

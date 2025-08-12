@@ -36,8 +36,8 @@ class Game:
         print(f"Coletou o clock e adicionou {segundos} segundos")
         self.tempo_restante += segundos
 
-    def tocar_musica(self, caminho_musica):
+    def tocar_musica(self, caminho_musica, fade_in=TEMPO_FADE_IN):
         if self.musica_atual != caminho_musica:
             pg.mixer.music.load(caminho_musica)
-            pg.mixer.music.play(loops=-1, fade_ms=TEMPO_FADE_IN)
+            pg.mixer.music.play(loops=-1, fade_ms=fade_in)
             self.musica_atual = caminho_musica
