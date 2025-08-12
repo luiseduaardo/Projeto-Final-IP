@@ -16,6 +16,11 @@ class Plataforma(pg.sprite.Sprite):
         #self.image.fill(cor)
         self.rect = self.image.get_rect(topleft=(x, y))
 
+class Trampolim(Plataforma):
+    def __init__(self, x, y, largura, altura):
+        super().__init__(x, y, largura, altura)
+        self.forca_impulso = FORCA_TRAMPOLIM
+
 
 class Tela_base:
     def __init__(self, game):

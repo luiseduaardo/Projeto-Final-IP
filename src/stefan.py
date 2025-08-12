@@ -83,11 +83,18 @@ class Stefan(pg.sprite.Sprite):
         
         colisoes_y = pg.sprite.spritecollide(self, self.game.plataformas, False)
         if colisoes_y:
+            plataforma_colidida = colisoes_y[0]
+
             if self.velocidade.y > 0: # em caso de colidir na descida
                 self.rect.bottom = colisoes_y[0].rect.top
-                self.velocidade.y = 0
+
+                if hasattr(plataforma_colidida, 'forca_impulso'):
+                    self.velocidade.y = plataforma_colidida.forca_impulso
+                else:
+                    self.velocidade.y = 0
                 self.posicao.y = self.rect.bottom
-            if self.velocidade.y < 0: # em caso de colidir na subida (bate a cabeça)
+
+            elif self.velocidade.y < 0: # em caso de colidir na subida (bate a cabeça)
                 self.rect.top = colisoes_y[0].rect.bottom
                 self.velocidade.y = 0
                 self.posicao.y = self.rect.bottom

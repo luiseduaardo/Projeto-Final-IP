@@ -27,6 +27,7 @@ GRAVIDADE_STEFAN = 0.8
 ACELERACAO_STEFAN = 0.5
 ATRITO_STEFAN = -0.14
 FORCA_PULO = -15
+FORCA_TRAMPOLIM = -20
 
 # tempo inicial do jogo
 TEMPO_INICIAL = 180
@@ -94,5 +95,6 @@ FASE2 = [
 [0,36,-1,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,-1,36,0]
 ]
 # matrizes pegas de arquivos .csv gerados pelo tiled
+
 # sfx
 TEMPO_FADE_IN = 2000

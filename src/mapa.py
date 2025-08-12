@@ -50,7 +50,7 @@ def desehar_mapa(fase):
                 elif item in [37, 38, 39, 40]: # trampolim
                     spritex = ([37, 38, 39, 40].index(item) + 1)*32
                     spritey = 64
-                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+                    plats.append(telas.Trampolim(coords[0], coords[1], 32, 32))
                     
                 elif item == 54: # corrente
                     spritex = 0
