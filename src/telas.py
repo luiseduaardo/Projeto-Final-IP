@@ -208,16 +208,10 @@ class Segunda_fase(Tela_base):
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
         self.game.todos_sprites.add(self.jogador)
 
-        plataformas_fase2 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40),
-            Plataforma(300, ALTURA - 150, 150, 20),
-            Plataforma(225, ALTURA - 225, 150, 20),
-            Plataforma(225, ALTURA - 380, 150, 20),
-            Plataforma(150, ALTURA - 300, 150, 20),
-            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20)
-        ]
-        self.game.plataformas.add(plataformas_fase2)
-        self.game.todos_sprites.add(plataformas_fase2)
+        plataformas_da_fase = self.mundo[1]
+
+        self.game.plataformas.add(plataformas_da_fase)
+        #self.game.todos_sprites.add(plataformas_da_fase)
 
         coletaveis_fase2 = [
             Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela'),
