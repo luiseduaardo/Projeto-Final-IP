@@ -10,10 +10,10 @@ import mapa
 
 
 class Plataforma(pg.sprite.Sprite):
-    def __init__(self, x, y, largura, altura, cor=LARANJA):
+    def __init__(self, x, y, largura, altura):
         super().__init__()
         self.image = pg.Surface((largura, altura))
-        self.image.fill(cor)
+        #self.image.fill(cor)
         self.rect = self.image.get_rect(topleft=(x, y))
 
 
@@ -21,7 +21,7 @@ class Tela_base:
     def __init__(self, game):
         self.game = game
         self.tela = game.tela
-        self.fonte_padrao = pg.font.SysFont('arial', 20, True, False)
+        self.fonte_padrao = pg.font.SysFont('segoeui', 20, True, False)
 
     def eventos(self, eventos):
         for event in eventos:
@@ -103,32 +103,46 @@ class Primeira_fase(Tela_base):
 
         self.game.tocar_musica(caminho_musica)
 
+        self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
+        self.hud = pg.transform.scale(self.hud, (int(952/3.5), int(342/3.5)))
+
         self.game.joias_coletadas.clear()
         
         self.jogador = Stefan(self.game, 100, ALTURA - 100)
         self.game.todos_sprites.add(self.jogador)
 
         self.mundo = mapa.desehar_mapa(FASE1)
-
+        print(self.mundo)
+        print(len(self.mundo[1]))
+        
         plataformas_fase1 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE), # Chão
+            Plataforma(0, ALTURA - 40, LARGURA, 40), # Chão
             Plataforma(200, ALTURA - 110, 150, 20),
             Plataforma(450, ALTURA - 230, 150, 20)
         ]
         
+        #plataformas_fase1.append(self.mundo[1])
+        plataformas_fase1 = self.mundo[1]
+        
         self.game.plataformas.add(plataformas_fase1)
         self.game.todos_sprites.add(plataformas_fase1)
-        
+
         coletaveis_fase1 = [
             Coletavel(500, ALTURA - 350, 'joia_vermelha'),
-            Coletavel(250, ALTURA - 220, 'bicicleta')
+            Coletavel(50, ALTURA - 100, 'joia_verde'),
+            Coletavel(250, ALTURA - 220, 'bicicleta'),
+            Coletavel(500, ALTURA - 100, 'clock')
         ]
+
         self.game.coletaveis.add(coletaveis_fase1)
         self.game.todos_sprites.add(coletaveis_fase1)
 
-        botao_morrer_img = pg.Surface((80,30))
+        botao_morrer_img = pg.Surface((80, 30))
         botao_morrer_img.fill(VERMELHO)
         self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
+
+        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1         {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
+
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -162,10 +176,13 @@ class Primeira_fase(Tela_base):
         self.tela.blit(self.mundo[0], (0, 0))
         
         
+        
         self.game.todos_sprites.draw(self.tela)
         
         self.botao_morrer.desenhar_botao(self.tela)
         self.desenhar_texto('morrer', BRANCO, 50, 25)
+        self.tela.blit(self.hud, (685, 0))
+        self.desenhar_texto(self.mensagem, (30,100, 125), 820, 72)
 
 
 class Segunda_fase(Tela_base):
@@ -176,6 +193,9 @@ class Segunda_fase(Tela_base):
 
         self.game.tocar_musica(caminho_musica)
 
+        self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
+        self.hud = pg.transform.scale(self.hud, (int(952/3.5), int(342/3.5)))
+
         self.game.joias_coletadas.clear()
         
         self.mundo = mapa.desehar_mapa(FASE2)
@@ -184,24 +204,33 @@ class Segunda_fase(Tela_base):
         self.game.todos_sprites.add(self.jogador)
 
         plataformas_fase2 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE),
-            Plataforma(300, ALTURA - 150, 150, 20, VERDE),
-            Plataforma(225, ALTURA - 225, 150, 20, VERDE),
-            Plataforma(225, ALTURA - 380, 150, 20, VERDE),
-            Plataforma(150, ALTURA - 300, 150, 20, VERDE),
-            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20, VERDE)
+            Plataforma(0, ALTURA - 40, LARGURA, 40),
+            Plataforma(300, ALTURA - 150, 150, 20),
+            Plataforma(225, ALTURA - 225, 150, 20),
+            Plataforma(225, ALTURA - 380, 150, 20),
+            Plataforma(150, ALTURA - 300, 150, 20),
+            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20)
         ]
         self.game.plataformas.add(plataformas_fase2)
         self.game.todos_sprites.add(plataformas_fase2)
 
-        coletavel_vitoria = Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela')
-        self.game.coletaveis.add(coletavel_vitoria)
-        self.game.todos_sprites.add(coletavel_vitoria)
+        coletaveis_fase2 = [
+            Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela'),
+            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_azul'),
+            Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
+            Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
+            ]
+        
+        self.game.coletaveis.add(coletaveis_fase2)
+        self.game.todos_sprites.add(coletaveis_fase2)
 
-        botao_morrer_img = pg.Surface((80,30))
+        botao_morrer_img = pg.Surface((80, 30))
         botao_morrer_img.fill(VERMELHO)
         self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
-        
+
+        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1         {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
+
+
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
@@ -228,6 +257,8 @@ class Segunda_fase(Tela_base):
         self.game.todos_sprites.draw(self.tela)
         self.botao_morrer.desenhar_botao(self.tela)
         self.desenhar_texto('morrer', BRANCO, 50, 25)
+        self.tela.blit(self.hud, (685, 0))
+        self.desenhar_texto(self.mensagem, (30, 100, 125), 820, 72)
 
 
 class Controles(Tela_base):
@@ -284,7 +315,7 @@ class Final_jogo(Tela_base):
 
         caminho_musica = 'sons/musica_vitoria.wav'
 
-        self.game.tocar_musica(caminho_musica, 0)
+        self.game.tocar_musica(caminho_musica)
 
         self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 

@@ -3,6 +3,8 @@
 #  mas ainda precisa melhor integração, com as colisões de plataformas
 # =====================================================================
 import pygame
+import telas
+ 
 #cenario = pygame.sprite.Group()
 def desehar_mapa(fase):
     # tem maneiras melhores de fazer isso mas assim é menos trabalho de entender oq ta acontecendo
@@ -18,8 +20,8 @@ def desehar_mapa(fase):
                 blitar = True
                  
                 if item == 0: # chao
-                    plats.append("yay")
                     spritex = spritey = 0
+                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                 
                 elif item == 4: # raios
                     spritex = 128
@@ -29,6 +31,7 @@ def desehar_mapa(fase):
                     # spritesheet2
                     spritex = 192
                     spritey = 0
+                    plats.append(telas.Plataforma(coords[0], coords[1]+11, 32, 21))
                     
                     #spritesheet1
                     # spritex = 0
@@ -38,6 +41,7 @@ def desehar_mapa(fase):
                     #spritesheet2
                     spritex = 160
                     spritey = 0
+                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                     
                     #spritesheet1
                     #spritex = 0
@@ -46,7 +50,7 @@ def desehar_mapa(fase):
                 elif item in [37, 38, 39, 40]: # trampolim
                     spritex = ([37, 38, 39, 40].index(item) + 1)*32
                     spritey = 64
-                    plats.append("aa")
+                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                     
                 elif item == 54: # corrente
                     spritex = 0
@@ -55,11 +59,12 @@ def desehar_mapa(fase):
                 elif item == 72: # fim da corrente
                     spritex = 0
                     spritey = 128
+                    
 
                 elif item == 90: # plataform aflutuante
                     spritex = 0
                     spritey = 160
-                    plats.append("yyy")
+                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                     
                 else:
                     blitar = False
