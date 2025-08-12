@@ -10,10 +10,10 @@ import mapa
 
 
 class Plataforma(pg.sprite.Sprite):
-    def __init__(self, x, y, largura, altura, cor=LARANJA):
+    def __init__(self, x, y, largura, altura):
         super().__init__()
         self.image = pg.Surface((largura, altura))
-        self.image.fill(cor)
+        #self.image.fill(cor)
         self.rect = self.image.get_rect(topleft=(x, y))
 
 
@@ -109,19 +109,24 @@ class Primeira_fase(Tela_base):
         self.game.todos_sprites.add(self.jogador)
 
         self.mundo = mapa.desehar_mapa(FASE1)
-
+        print(self.mundo)
+        print(len(self.mundo[1]))
+        
         plataformas_fase1 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE), # Chão
+            Plataforma(0, ALTURA - 40, LARGURA, 40), # Chão
             Plataforma(200, ALTURA - 110, 150, 20),
             Plataforma(450, ALTURA - 230, 150, 20)
         ]
         
+        #plataformas_fase1.append(self.mundo[1])
+        plataformas_fase1 = self.mundo[1]
+        
         self.game.plataformas.add(plataformas_fase1)
-        self.game.todos_sprites.add(plataformas_fase1)
+        #self.game.todos_sprites.add(plataformas_fase1)
         
         coletaveis_fase1 = [
             Coletavel(500, ALTURA - 350, 'joia_vermelha'),
-            Coletavel(250, ALTURA - 220, 'bicicleta')
+            Coletavel(250, ALTURA - 210, 'bicicleta')
         ]
         self.game.coletaveis.add(coletaveis_fase1)
         self.game.todos_sprites.add(coletaveis_fase1)
@@ -162,6 +167,7 @@ class Primeira_fase(Tela_base):
         self.tela.blit(self.mundo[0], (0, 0))
         
         
+        
         self.game.todos_sprites.draw(self.tela)
         
         self.botao_morrer.desenhar_botao(self.tela)
@@ -184,12 +190,12 @@ class Segunda_fase(Tela_base):
         self.game.todos_sprites.add(self.jogador)
 
         plataformas_fase2 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40, VERDE),
-            Plataforma(300, ALTURA - 150, 150, 20, VERDE),
-            Plataforma(225, ALTURA - 225, 150, 20, VERDE),
-            Plataforma(225, ALTURA - 380, 150, 20, VERDE),
-            Plataforma(150, ALTURA - 300, 150, 20, VERDE),
-            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20, VERDE)
+            Plataforma(0, ALTURA - 40, LARGURA, 40),
+            Plataforma(300, ALTURA - 150, 150, 20),
+            Plataforma(225, ALTURA - 225, 150, 20),
+            Plataforma(225, ALTURA - 380, 150, 20),
+            Plataforma(150, ALTURA - 300, 150, 20),
+            Plataforma(LARGURA/2 - 75, ALTURA - 450, 150, 20)
         ]
         self.game.plataformas.add(plataformas_fase2)
         self.game.todos_sprites.add(plataformas_fase2)
