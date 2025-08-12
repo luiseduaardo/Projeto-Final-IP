@@ -94,3 +94,5 @@ FASE2 = [
 [0,36,-1,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,-1,36,0]
 ]
 # matrizes pegas de arquivos .csv gerados pelo tiled
+# sfx
+TEMPO_FADE_IN = 2000
