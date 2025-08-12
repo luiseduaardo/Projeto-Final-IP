@@ -5,6 +5,8 @@ from botoes import Botao
 from sys import exit
 from stefan import Stefan
 from coletaveis import Coletavel
+import moviepy as mp
+import numpy as np
 
 import mapa
 
@@ -85,7 +87,7 @@ class Tela_inicial(Tela_base):
         super().eventos(eventos)
         if self.botoes_carregados:
             if self.botao_jogar.click():
-                self.mudar_tela(Primeira_fase)
+                self.mudar_tela(TelaDeVideo)
             if self.botao_controles.click():
                 self.mudar_tela(Controles)
             if self.botao_sair.click():
@@ -99,136 +101,73 @@ class Tela_inicial(Tela_base):
         self.botao_controles.desenhar_botao(self.tela)
         self.botao_sair.desenhar_botao(self.tela)
 
-
-class Primeira_fase(Tela_base):
+class TelaDeVideo(Tela_base):
     def __init__(self, game):
         super().__init__(game)
-
-        caminho_musica = 'sons/musica_gameplay.wav'
-
-        self.game.tocar_musica(caminho_musica)
-
-        self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
-        self.hud = pg.transform.scale(self.hud, (int(952/3.5), int(342/3.5)))
-
-        self.game.joias_coletadas.clear()
         
-        self.jogador = Stefan(self.game, 100, ALTURA - 100)
-        self.game.todos_sprites.add(self.jogador)
-
-        self.mundo = mapa.desehar_mapa(FASE1)
-        print(self.mundo)
-        print(len(self.mundo[1]))
+        self.clip = mp.VideoFileClip('imagens/video_slideshow.mp4')
+        self.frame_iterator = self.clip.iter_frames(fps=FPS, dtype='uint8')
         
-        plataformas_fase1 = [
-            Plataforma(0, ALTURA - 40, LARGURA, 40), # Chão
-            Plataforma(200, ALTURA - 110, 150, 20),
-            Plataforma(450, ALTURA - 230, 150, 20)
-        ]
-        
-        #plataformas_fase1.append(self.mundo[1])
-        plataformas_fase1 = self.mundo[1]
-        
-        self.game.plataformas.add(plataformas_fase1)
-        #self.game.todos_sprites.add(plataformas_fase1)
-        
-        coletaveis_fase1 = [
-            Coletavel(500, ALTURA - 350, 'joia_vermelha'),
-            Coletavel(50, ALTURA - 100, 'joia_verde'),
-            Coletavel(250, ALTURA - 210, 'bicicleta'),
-            Coletavel(500, ALTURA - 100, 'clock')
-        ]
+        self.game.tocar_musica('sons/musica_slideshow.wav')
 
-        self.game.coletaveis.add(coletaveis_fase1)
-        self.game.todos_sprites.add(coletaveis_fase1)
-
-        botao_morrer_img = pg.Surface((80, 30))
-        botao_morrer_img.fill(VERMELHO)
-        self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
-
-        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1         {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
-
+        self.largura_video = LARGURA
+        self.altura_video = ALTURA
 
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
             if event.type == pg.KEYDOWN:
-                if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
-                    self.jogador.pular()
-        
-        if self.botao_morrer.click():
-            self.mudar_tela(Morte)
+                if event.key in (pg.K_ESCAPE, pg.K_RETURN, pg.K_SPACE):
+                    pg.mixer.music.stop()
+                    
+                    self.mudar_tela(Primeira_fase)
 
     def update(self):
-        self.game.todos_sprites.update()
-        if self.jogador.rect.top > ALTURA:
-            self.mudar_tela(Morte)
-        
-        joias_na_fase = []
-
-        for s in self.game.coletaveis:
-            if 'joia' in s.tipo:
-                joias_na_fase.append(s)
-
-        if not joias_na_fase:
-            self.mudar_tela(Segunda_fase)
+        pass
 
     def desenhar(self):
-        super().desenhar()
-        
-        self.tela.fill(ROXO)
-        
-        self.tela.blit(self.mundo[0], (0, 0))
-        
-        
-        
-        self.game.todos_sprites.draw(self.tela)
-        
-        self.botao_morrer.desenhar_botao(self.tela)
-        self.desenhar_texto('morrer', BRANCO, 50, 25)
-        self.tela.blit(self.hud, (685, 0))
-        self.desenhar_texto(self.mensagem, (30,100, 125), 820, 72)
+        try:
+            frame = next(self.frame_iterator)
+            frame_surface = pg.Surface(self.clip.size)
+            pg.surfarray.blit_array(frame_surface, np.transpose(frame, (1, 0, 2)))
+
+            frame_surface_resized = pg.transform.scale(frame_surface, (self.largura_video, self.altura_video))
+
+            pos_x = (LARGURA - self.largura_video) // 2
+            pos_y = (ALTURA - self.altura_video) // 2
+
+            self.tela.blit(frame_surface_resized, (pos_x, pos_y))
+
+        except StopIteration: # só assim ele vai chamar a fase - forçando o erro
+            self.mudar_tela(Primeira_fase)
 
 
-class Segunda_fase(Tela_base):
-    def __init__(self, game):
+class FaseGenerica(Tela_base):
+    def __init__(self, game, dados_mapa, coletaveis_mapa, proxima_fase):
         super().__init__(game)
+        
+        self.proxima_fase = proxima_fase
 
-        caminho_musica = 'sons/musica_gameplay.wav'
-
-        self.game.tocar_musica(caminho_musica)
-
+        self.game.tocar_musica('sons/musica_gameplay.wav')
         self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
         self.hud = pg.transform.scale(self.hud, (int(952/3.5), int(342/3.5)))
-
         self.game.joias_coletadas.clear()
         
-        self.mundo = mapa.desehar_mapa(FASE2)
-        
-        self.jogador = Stefan(self.game, 100, ALTURA - 100)
+        self.mundo, plataformas_da_fase, pos_jogador = mapa.desehar_mapa(dados_mapa)
+        self.game.plataformas.add(plataformas_da_fase)
+        #self.game.todos_sprites.add(plataformas_da_fase) # hitbox
+
+        self.jogador = Stefan(self.game, pos_jogador[0], pos_jogador[1])
         self.game.todos_sprites.add(self.jogador)
 
-        plataformas_da_fase = self.mundo[1]
+        # coletáveis recebidos
+        self.game.coletaveis.add(coletaveis_mapa)
+        self.game.todos_sprites.add(coletaveis_mapa)
 
-        self.game.plataformas.add(plataformas_da_fase)
-        #self.game.todos_sprites.add(plataformas_da_fase)
-
-        coletaveis_fase2 = [
-            Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela'),
-            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_azul'),
-            Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
-            Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
-            ]
-        
-        self.game.coletaveis.add(coletaveis_fase2)
-        self.game.todos_sprites.add(coletaveis_fase2)
-
-        botao_morrer_img = pg.Surface((80, 30))
-        botao_morrer_img.fill(VERMELHO)
+        # HUD e botão de morrer
+        botao_morrer_img = pg.Surface((80, 30)); botao_morrer_img.fill(VERMELHO)
         self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
-
-        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1         {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
-
+        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1      {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -236,7 +175,6 @@ class Segunda_fase(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
                     self.jogador.pular()
-        
         if self.botao_morrer.click():
             self.mudar_tela(Morte)
 
@@ -247,17 +185,42 @@ class Segunda_fase(Tela_base):
         
         joias_na_fase = [s for s in self.game.coletaveis if 'joia' in s.tipo]
         if not joias_na_fase:
-            self.mudar_tela(Final_jogo)
+            # muda pra próxima fase
+            self.mudar_tela(self.proxima_fase)
 
     def desenhar(self):
         super().desenhar()
-        self.tela.fill(ROXO)
-        self.tela.blit(self.mundo[0], (0,0))
+        self.tela.fill(AZUL)
+        self.tela.blit(self.mundo, (0, 0))
         self.game.todos_sprites.draw(self.tela)
         self.botao_morrer.desenhar_botao(self.tela)
         self.desenhar_texto('morrer', BRANCO, 50, 25)
         self.tela.blit(self.hud, (685, 0))
         self.desenhar_texto(self.mensagem, (30, 100, 125), 820, 72)
+
+
+class Primeira_fase(FaseGenerica):
+    def __init__(self, game):
+        coletaveis_fase1 = [
+            Coletavel(500, ALTURA - 350, 'joia_vermelha'),
+            Coletavel(50, ALTURA - 100, 'joia_verde'),
+            Coletavel(250, ALTURA - 210, 'bicicleta'),
+            Coletavel(500, ALTURA - 100, 'clock')
+        ]
+
+        super().__init__(game, FASE1, coletaveis_fase1, Segunda_fase)
+
+
+class Segunda_fase(FaseGenerica):
+    def __init__(self, game):
+        coletaveis_fase2 = [
+            Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela'),
+            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_azul'),
+            Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
+            Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
+        ]
+
+        super().__init__(game, FASE2, coletaveis_fase2, Final_jogo)
 
 
 class Controles(Tela_base):

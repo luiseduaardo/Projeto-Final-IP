@@ -65,6 +65,10 @@ def desehar_mapa(fase):
                     spritex = 0
                     spritey = 160
                     plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+
+                elif item == 99: # posição de início de stefan
+                    pos_jogador = (coords[0], coords[1])
+                    blitar = False
                     
                 else:
                     blitar = False
@@ -81,4 +85,4 @@ def desehar_mapa(fase):
     
 
 
-    return plano, plats
+    return plano, plats, pos_jogador
