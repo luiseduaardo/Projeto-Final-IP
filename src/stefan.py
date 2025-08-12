@@ -22,6 +22,10 @@ class Stefan(pg.sprite.Sprite):
         self.boost_ativo = False
         self.boost_tempo_fim = 0
 
+        self.qtd_bicicletas_coletadas = 0
+        self.qtd_relogios_coletados = 0
+        self.qtd_joias_coletadas = 0
+
     def update(self):
         self.aceleracao = pg.math.Vector2(0, GRAVIDADE_STEFAN)
 
@@ -114,12 +118,18 @@ class Stefan(pg.sprite.Sprite):
         for item in itens_coletados:
             if 'joia' in item.tipo:
                 self.game.coletar_joia(item.tipo)
+                self.qtd_joias_coletadas +=1 
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
             
             elif item.tipo == 'bicicleta':
                 self.ativar_boost_velocidade()
+                self.qtd_bicicletas_coletadas += 1
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
 
             elif item.tipo == 'clock':
                 self.game.adicionar_tempo(TEMPO_CLOCK)
+                self.qtd_relogios_coletados += 1
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
 
     def ativar_boost_velocidade(self):
         print(f"bicicleta coletada.")
