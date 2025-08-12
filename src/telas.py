@@ -125,12 +125,12 @@ class Primeira_fase(Tela_base):
         plataformas_fase1 = self.mundo[1]
         
         self.game.plataformas.add(plataformas_fase1)
-        self.game.todos_sprites.add(plataformas_fase1)
-
+        #self.game.todos_sprites.add(plataformas_fase1)
+        
         coletaveis_fase1 = [
             Coletavel(500, ALTURA - 350, 'joia_vermelha'),
             Coletavel(50, ALTURA - 100, 'joia_verde'),
-            Coletavel(250, ALTURA - 220, 'bicicleta'),
+            Coletavel(250, ALTURA - 210, 'bicicleta'),
             Coletavel(500, ALTURA - 100, 'clock')
         ]
 
