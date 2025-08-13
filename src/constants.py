@@ -28,6 +28,7 @@ ACELERACAO_STEFAN = 0.40
 ATRITO_STEFAN = -0.14
 FORCA_PULO = -15
 FORCA_TRAMPOLIM = -20
+PERDA_TRAMPOLIM = 0.95 # perde 10% a cada pulo
 
 # tempo inicial do jogo
 TEMPO_INICIAL = 180

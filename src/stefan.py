@@ -22,6 +22,8 @@ class Stefan(pg.sprite.Sprite):
         self.boost_ativo = False
         self.boost_tempo_fim = 0
 
+        self.impulso_trampolim_atual = 0
+
         self.qtd_bicicletas_coletadas = 0
         self.qtd_relogios_coletados = 0
         self.qtd_joias_coletadas = 0
@@ -93,7 +95,12 @@ class Stefan(pg.sprite.Sprite):
                 self.rect.bottom = colisoes_y[0].rect.top
 
                 if hasattr(plataforma_colidida, 'forca_impulso'):
-                    self.velocidade.y = plataforma_colidida.forca_impulso
+                    if self.impulso_trampolim_atual == 0:
+                        self.impulso_trampolim_atual = plataforma_colidida.forca_impulso
+
+                    self.velocidade.y = self.impulso_trampolim_atual
+                    self.impulso_trampolim_atual *= PERDA_TRAMPOLIM
+
                 else:
                     self.velocidade.y = 0
                 self.posicao.y = self.rect.bottom
@@ -111,6 +118,7 @@ class Stefan(pg.sprite.Sprite):
         self.rect.y -= 1
 
         if colisoes_plataforma:
+            self.impulso_trampolim_atual = 0
             self.velocidade.y = FORCA_PULO
 
     def checar_colisao_itens(self):
