@@ -16,10 +16,14 @@ class Stefan(pg.sprite.Sprite):
         
         self.rect = self.image.get_rect()
         # ajuste de hitbox
-        self.rect.topleft = (pos_x+9, pos_y-1)
-        self.rect.width = 32
+        self.rect.width = 30
         self.rect.height = 48
-
+        self.rect.topleft = (pos_x-20, pos_y-34444449)
+        
+        self.hitbox = pg.Surface((30, 48))
+        
+        
+        
         self.posicao = pg.math.Vector2(pos_x, pos_y)
         self.velocidade = pg.math.Vector2(0, 0)
         self.aceleracao = pg.math.Vector2(0, 0)

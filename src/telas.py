@@ -226,7 +226,9 @@ class FaseGenerica(Tela_base):
         self.tela.blit(self.hud_coletaveis, (690, -4))
         self.tela.blit(self.hud_relogio, (-1, -1))
 
-
+        self.jogador.hitbox.fill(VERMELHO)
+        self.tela.blit(self.jogador.hitbox, self.jogador.rect.topleft)
+        
         self.texto_bicicletas = f'{self.jogador.qtd_bicicletas_coletadas}/1'
         self.texto_relogios = f'{self.jogador.qtd_relogios_coletados}/1'
         self.texto_joias = f'{self.jogador.qtd_joias_coletadas}/2'
@@ -246,10 +248,16 @@ class FaseGenerica(Tela_base):
 class Primeira_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase1 = [
-            Coletavel(650, ALTURA - 120, 'joia_and'),
-            Coletavel(150, ALTURA - 100, 'joia_xor'),
-            Coletavel(250, ALTURA - 350, 'bicicleta'),
-            Coletavel(50, ALTURA - 460, 'clock')
+            #Coletavel(650, ALTURA - 120, 'joia_and'),
+            #Coletavel(150, ALTURA - 100, 'joia_xor'),
+            #Coletavel(250, ALTURA - 350, 'bicicleta'),
+            #Coletavel(50, ALTURA - 460, 'clock')
+
+            Coletavel(830, 80, "joia_and"),
+            Coletavel(170, ALTURA-90, "bicicleta"),
+            Coletavel(50, 200, "joia_xor"),
+            Coletavel(120, 250, "clock")
+
         ]
 
         super().__init__(game, FASE1, coletaveis_fase1, Segunda_fase)

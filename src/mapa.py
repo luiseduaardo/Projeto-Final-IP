@@ -66,7 +66,7 @@ def desehar_mapa(fase):
                 elif item == 90: # plataform aflutuante
                     spritex = 0
                     spritey = 160
-                    plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+                    plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 5))
 
                 elif item == 99: # posição de início de stefan
                     pos_jogador = (coords[0], coords[1])
