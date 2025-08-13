@@ -200,15 +200,18 @@ class FaseGenerica(Tela_base):
         if self.game.tempo_restante <= 0:
             self.game.tempo_restante = 0
             pg.time.set_timer(self.timer_segundo, 0)
+            self.game.sfx_morte.play()
             self.mudar_tela(Morte)
             return
 
         self.game.todos_sprites.update()
         if self.jogador.rect.top > ALTURA:
+            self.game.sfx_morte.play()
             self.mudar_tela(Morte)
             return
 
         if pg.sprite.spritecollideany(self.jogador, self.game.plataformas_mortais):
+            self.game.sfx_morte.play()
             self.mudar_tela(Morte)
             return
         
