@@ -13,6 +13,10 @@ class Game:
         self.musica_atual = None
         self.sfx_hover = pg.mixer.Sound('sons/sfx_hover.wav')
         self.sfx_click = pg.mixer.Sound('sons/sfx_click.wav')
+        self.sfx_morte = pg.mixer.Sound('sons/sfx_morte.wav')
+        self.sfx_joia = pg.mixer.Sound('sons/sfx_joias.wav')
+        self.sfx_clock = pg.mixer.Sound('sons/sfx_clock.wav')
+        self.sfx_bike = pg.mixer.Sound('sons/sfx_bike.wav')
 
         self.tela = pg.display.set_mode((LARGURA, ALTURA))
         pg.display.set_caption(TITULO_JOGO)
@@ -31,12 +35,9 @@ class Game:
         self.tela_atual = Tela_inicial(self)
 
     def coletar_joia(self, tipo_joia):
-        print(f"Coletou a {tipo_joia}")
         self.joias_coletadas.add(tipo_joia)
 
     def adicionar_tempo(self, segundos):
-
-        print(f"Coletou o clock e adicionou {segundos} segundos")
         self.tempo_restante += segundos
 
     def tocar_musica(self, caminho_musica, fade_in=TEMPO_FADE_IN):

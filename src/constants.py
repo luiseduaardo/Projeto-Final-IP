@@ -36,7 +36,7 @@ FORCA_TRAMPOLIM = -20
 PERDA_TRAMPOLIM = 0.95 # perde 10% a cada pulo
 
 # tempo inicial do jogo
-TEMPO_INICIAL = 180
+TEMPO_INICIAL = 10
 
 # atributos dos coletáveis
 TEMPO_CLOCK = 15
