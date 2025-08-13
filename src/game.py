@@ -22,6 +22,7 @@ class Game:
 
         self.todos_sprites = pg.sprite.Group()
         self.plataformas = pg.sprite.Group()
+        self.plataformas_mortais = pg.sprite.Group()
         self.coletaveis = pg.sprite.Group()
 
         self.tempo_restante = TEMPO_INICIAL
