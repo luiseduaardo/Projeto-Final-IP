@@ -6,8 +6,12 @@ class Stefan(pg.sprite.Sprite):
         super().__init__()
         self.game = game
 
-        self.image = pg.Surface((40, 40))
-        self.image.fill(VERMELHO)
+        self.image = pg.Surface((32, 32), pg.SRCALPHA)
+        self.frames = pg.image.load("imagens\sprites\stefan.png")
+        self.flip = False
+        self.frame_stefan = 0
+        
+        
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x, pos_y)
 
@@ -17,6 +21,8 @@ class Stefan(pg.sprite.Sprite):
 
         self.boost_ativo = False
         self.boost_tempo_fim = 0
+
+        self.impulso_trampolim_atual = 0
 
         self.qtd_bicicletas_coletadas = 0
         self.qtd_relogios_coletados = 0
@@ -34,9 +40,26 @@ class Stefan(pg.sprite.Sprite):
 
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.aceleracao.x = -aceleracao_base
+            self.frame_stefan = (self.frame_stefan+1)%51
+            self.aceleracao.x -= aceleracao_base
+            if self.flip:
+                self.flip = False
+
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.aceleracao.x = aceleracao_base
+            self.frame_stefan = (self.frame_stefan+1)%51
+            self.aceleracao.x += aceleracao_base
+            if not self.flip:
+                self.flip = True
+
+        if not (keys[pg.K_LEFT] or keys[pg.K_RIGHT] or keys[pg.K_a] or keys[pg.K_d]):
+            self.frame_stefan = 0
+
+        # carrega o frame de Stefan de acordo com o sprite selecionado
+        self.image = pg.Surface((32, 32), pg.SRCALPHA)
+        self.image.blit(self.frames, (0,0), pg.Rect((self.frame_stefan*32,0), (32,32)))
+        if self.flip:
+            self.image = pg.transform.flip(self.image, 1, 0)
+        
 
         # define a física do movimento horizontal e possíveis colisões
         self.aceleracao.x += self.velocidade.x * ATRITO_STEFAN
@@ -66,11 +89,23 @@ class Stefan(pg.sprite.Sprite):
         
         colisoes_y = pg.sprite.spritecollide(self, self.game.plataformas, False)
         if colisoes_y:
+            plataforma_colidida = colisoes_y[0]
+
             if self.velocidade.y > 0: # em caso de colidir na descida
                 self.rect.bottom = colisoes_y[0].rect.top
-                self.velocidade.y = 0
+
+                if hasattr(plataforma_colidida, 'forca_impulso'):
+                    if self.impulso_trampolim_atual == 0:
+                        self.impulso_trampolim_atual = plataforma_colidida.forca_impulso
+
+                    self.velocidade.y = self.impulso_trampolim_atual
+                    self.impulso_trampolim_atual *= PERDA_TRAMPOLIM
+
+                else:
+                    self.velocidade.y = 0
                 self.posicao.y = self.rect.bottom
-            if self.velocidade.y < 0: # em caso de colidir na subida (bate a cabeça)
+
+            elif self.velocidade.y < 0: # em caso de colidir na subida (bate a cabeça)
                 self.rect.top = colisoes_y[0].rect.bottom
                 self.velocidade.y = 0
                 self.posicao.y = self.rect.bottom
@@ -83,6 +118,7 @@ class Stefan(pg.sprite.Sprite):
         self.rect.y -= 1
 
         if colisoes_plataforma:
+            self.impulso_trampolim_atual = 0
             self.velocidade.y = FORCA_PULO
 
     def checar_colisao_itens(self):
@@ -92,14 +128,20 @@ class Stefan(pg.sprite.Sprite):
                 self.game.coletar_joia(item.tipo)
                 self.qtd_joias_coletadas +=1 
                 self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
+                self.qtd_joias_coletadas +=1 
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
             
             elif item.tipo == 'bicicleta':
                 self.ativar_boost_velocidade()
                 self.qtd_bicicletas_coletadas += 1
                 self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
+                self.qtd_bicicletas_coletadas += 1
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
 
             elif item.tipo == 'clock':
                 self.game.adicionar_tempo(TEMPO_CLOCK)
+                self.qtd_relogios_coletados += 1
+                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
                 self.qtd_relogios_coletados += 1
                 self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
 
