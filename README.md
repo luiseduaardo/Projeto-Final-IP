@@ -56,6 +56,15 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 As ferramentas, bibliotecas, frameworks utilizados com as respectivas justificativas para o uso;
 *escrever*
 
+```ini
+[JSFXR]:
+- Facilidade na produção de diferentes tipos de efeitos sonoros com uma customização dinâmica e simples, economizando tempo comparado com outras ferramentas de produção de efeitos sonoros;
+
+[Youtube/Wav.ninja]:
+- Variedade extensa de opções facilmente acessíveis para a trilha sonora do projeto, permitindo maior gama de opções e possibilidade de buscar por temas específicos;
+```
+*preencham o resto depois*
+
 
 ## 👥 | Divisão de tarefas
 
