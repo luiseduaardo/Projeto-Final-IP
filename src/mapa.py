@@ -14,14 +14,13 @@ def desehar_mapa(fase):
     plats_normais = []
     plats_mortais = []
     
-    for linha in fase: # TODO: mudar o sistema pra colocar fase_atual e pra pegar o estado de fase atual
-            #TODO: ajeitar a transparencia dos tiles  pq nao ta rodando
-            # SPRITESHEET2 TODO ajeitar placement das bobinas e dos trampolins
+    for linha in fase:
             for item in linha:
                 blitar = True
                  
-                if item == 0: # chao
-                    spritex = spritey = 0
+                if item in [0, 1, 2, 3]: # chao
+                    spritex = ([0, 1, 2, 3].index(item) + 1)*32
+                    spritey = 0
                     plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                 
                 elif item == 4: # raios
@@ -29,7 +28,7 @@ def desehar_mapa(fase):
                     spritey = 0
                     plats_mortais.append(telas.Plataforma_mortal(coords[0], coords[1], 32, 32))
 
-                elif item == 18: # bobina
+                elif item == 6: # bobina
                     # spritesheet2
                     spritex = 192
                     spritey = 0
@@ -39,7 +38,7 @@ def desehar_mapa(fase):
                     # spritex = 0
                     #spritey = 32
 
-                elif item == 36: # centro da bobina
+                elif item == 5: # centro da bobina
                     #spritesheet2
                     spritex = 160
                     spritey = 0
