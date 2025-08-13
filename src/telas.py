@@ -171,7 +171,7 @@ class FaseGenerica(Tela_base):
         self.mundo, plataformas_normais, plataformas_mortais, pos_jogador = mapa.desehar_mapa(dados_mapa)
         self.game.plataformas.add(plataformas_normais)
         self.game.plataformas_mortais.add(plataformas_mortais)
-        #self.game.todos_sprites.add(plataformas_da_fase) # hitbox
+        #self.game.todos_sprites.add(plataformas_mortais) # hitbox
 
         self.jogador = Stefan(self.game, pos_jogador[0], pos_jogador[1])
         self.game.todos_sprites.add(self.jogador)
@@ -223,7 +223,7 @@ class FaseGenerica(Tela_base):
         self.tela.fill(AZUL)
         self.tela.blit(self.mundo, (0, 0))
         self.game.todos_sprites.draw(self.tela)
-        #self.tela.blit(self.hud_coletaveis, (690, -4))
+        self.tela.blit(self.hud_coletaveis, (690, -4))
         self.tela.blit(self.hud_relogio, (-1, -1))
 
 
@@ -246,10 +246,10 @@ class FaseGenerica(Tela_base):
 class Primeira_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase1 = [
-            Coletavel(500, ALTURA - 350, 'joia_and'),
+            Coletavel(720, ALTURA - 120, 'joia_and'),
             Coletavel(50, ALTURA - 100, 'joia_xor'),
-            Coletavel(250, ALTURA - 250, 'bicicleta'),
-            Coletavel(140, ALTURA - 80, 'clock')
+            Coletavel(250, ALTURA - 350, 'bicicleta'),
+            Coletavel(50, ALTURA - 460, 'clock')
         ]
 
         super().__init__(game, FASE1, coletaveis_fase1, Segunda_fase)

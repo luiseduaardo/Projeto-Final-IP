@@ -10,6 +10,7 @@ def desehar_mapa(fase):
     # tem maneiras melhores de fazer isso mas assim é menos trabalho de entender oq ta acontecendo
     plano = pygame.Surface((960, 640), pygame.SRCALPHA)
     sheet = pygame.image.load("imagens/sprites/spritesheet2.png").convert_alpha()
+    
     coords = [0, 0]
     plats_normais = []
     plats_mortais = []
@@ -19,7 +20,7 @@ def desehar_mapa(fase):
                 blitar = True
                  
                 if item in [0, 1, 2, 3]: # chao
-                    spritex = ([0, 1, 2, 3].index(item) + 1)*32
+                    spritex = (item)*32
                     spritey = 0
                     plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                 
@@ -32,7 +33,7 @@ def desehar_mapa(fase):
                     # spritesheet2
                     spritex = 192
                     spritey = 0
-                    plats_mortais.append(telas.Plataforma_mortal(coords[0], coords[1]+11, 32, 21))
+                    plats_mortais.append(telas.Plataforma_mortal(coords[0]+1, coords[1]+12, 30, 20))
                     
                     #spritesheet1
                     # spritex = 0

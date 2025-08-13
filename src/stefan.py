@@ -5,31 +5,20 @@ class Stefan(pg.sprite.Sprite):
     def __init__(self, game, pos_x, pos_y):
         super().__init__()
         self.game = game
-        # =============== AUMENTANDO O TAMANHO DE STEFAN ================
-        # ===================== WIP NAO MEXER ===========================
-        self.image = pg.Surface((32, 32), pg.SRCALPHA) #self.image = pg.Surface((50, 50), pg.SRCALPHA)
+        
+        self.image = pg.Surface((50, 50), pg.SRCALPHA)
         self.frames = pg.image.load("imagens\sprites\stefan.png")
-        #self.frames = pg.transform.scale(self.frames, (32*60*(50**(1/2)), 32*(50**(1/2))))
-        '''
-        rodando = True
-        a = pg.display.set_mode((LARGURA, ALTURA))
-        while rodando:
-            evento = pg.event.get()
-            for eventos in evento:
-                if eventos.type == pg.QUIT:
-                    rodando = False
-                self.image.fill(VERMELHO)
-                a.blit(self.frames, (0,0))
-                a.blit(self.image, (50, 50))
-                pg.display.flip()
-        '''
-        # ==============================================================
+        self.frames = pg.transform.scale(self.frames, ((32*60*(50/32)), 32*(50/32)))
+
         self.flip = False
         self.frame_stefan = 0
         
         
         self.rect = self.image.get_rect()
-        self.rect.topleft = (pos_x, pos_y)
+        # ajuste de hitbox
+        self.rect.topleft = (pos_x+9, pos_y-1)
+        self.rect.width = 32
+        self.rect.height = 48
 
         self.posicao = pg.math.Vector2(pos_x, pos_y)
         self.velocidade = pg.math.Vector2(0, 0)
@@ -71,8 +60,8 @@ class Stefan(pg.sprite.Sprite):
             self.frame_stefan = 0
 
         # carrega o frame de Stefan de acordo com o sprite selecionado
-        self.image = pg.Surface((32, 32), pg.SRCALPHA) #self.image = pg.Surface((50, 50), pg.SRCALPHA)
-        self.image.blit(self.frames, (0,0), pg.Rect((self.frame_stefan*32,0), (32,32)))
+        self.image = pg.Surface((50, 50), pg.SRCALPHA)
+        self.image.blit(self.frames, (0,0), pg.Rect((self.frame_stefan*32*(50/32),0), (50,50)))
         if self.flip:
             self.image = pg.transform.flip(self.image, 1, 0)
         
@@ -157,5 +146,3 @@ class Stefan(pg.sprite.Sprite):
         self.boost_ativo = True
         self.boost_tempo_fim = pg.time.get_ticks() + TEMPO_BOOST
 
-
-#sdfg = Stefan(0, 0, 0)
