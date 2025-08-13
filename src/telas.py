@@ -298,6 +298,8 @@ class Final_jogo(Tela_base):
 
         self.game.tocar_musica(caminho_musica)
 
+        self.game.tocar_musica(caminho_musica)
+
         self.tela_vitoria = pg.image.load('imagens/telas/tela_vitoria.png').convert()
 
     def eventos(self, eventos):
