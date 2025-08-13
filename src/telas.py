@@ -160,6 +160,8 @@ class FaseGenerica(Tela_base):
         
         self.proxima_fase = proxima_fase
 
+        self.fundo = pg.image.load('imagens/telas/fundo_fases.jpg').convert()
+
         # cronometro
         self.timer_segundo = pg.USEREVENT + 1
         pg.time.set_timer(self.timer_segundo, 1000)
@@ -220,7 +222,7 @@ class FaseGenerica(Tela_base):
 
     def desenhar(self):
         super().desenhar()
-        self.tela.fill(AZUL)
+        self.tela.blit(self.fundo, (0, 0))
         self.tela.blit(self.mundo, (0, 0))
         self.game.todos_sprites.draw(self.tela)
         self.tela.blit(self.hud_coletaveis, (690, -4))
