@@ -41,30 +41,30 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 ## 📸 | Capturas de tela
 
 
-## ⚙️ | Ferramentas utilizadas
-- 🐍 **Python** — Linguagem principal do projeto  
-- 🎮 **Pygame** — Estrutura do jogo e implementação prática  
-- 📋 **Trello** — Organização e gerenciamento de tarefas  
-- 🌐 **Git & GitHub** — Versionamento e colaboração  
-- 🗺️ **Tiled** — Criação e edição de mapas  
-- 🎨 **Pixelorama** & **Magma** — Criação de sprites  
-- 🔊 **jsfxr** — Efeitos sonoros  
-- 🎵 **YouTube** & **Wav.ninja** — Trilhas sonoras (BGM) 
+## ⚙️ | Ferramentas utilizadas e justificativas
+🐍 **Python** — Linguagem de programação usada no projeto
 
-### Justificativas
 
-As ferramentas, bibliotecas, frameworks utilizados com as respectivas justificativas para o uso;
-*escrever*
+🎮 **Pygame** — Biblioteca externa com suporte strutura do jogo e implementação prática
 
-```ini
-[JSFXR]:
-- Facilidade na produção de diferentes tipos de efeitos sonoros com uma customização dinâmica e simples, economizando tempo comparado com outras ferramentas de produção de efeitos sonoros;
 
-[Youtube/Wav.ninja]:
-- Variedade extensa de opções facilmente acessíveis para a trilha sonora do projeto, permitindo maior gama de opções e possibilidade de buscar por temas específicos;
-```
-*preencham o resto depois*
+📋 **Trello** — Organização e gerenciamento de tarefas
+Usado para organizar as tarefas e gerenciar os prazos, atribuindo mais facilmente cada tarefa para uma pessoa 
 
+🌐 **Git & GitHub** — Versionamento e colaboração
+
+
+🗺️ **Tiled** — Criação e edição de mapas
+
+
+🎨 **Pixelorama** & **Magma** — Criação de sprites
+
+
+🔊 **jsfxr** — Efeitos sonoros
+Foi escolhido pela facilidade na produção de diferentes tipos de efeitos sonoros com uma customização dinâmica e simples, economizando tempo comparado com outras ferramentas de produção de efeitos sonoros.
+
+🎵 **YouTube** & **Wav.ninja** — Trilhas sonoras (BGM) 
+Possuem uma extensa quantidade de opções facilmente acessíveis para a trilha sonora do projeto, permitindo maior gama de opções e possibilidade de buscar por temas específicos.
 
 ## 👥 | Divisão de tarefas
 
