@@ -225,9 +225,10 @@ class FaseGenerica(Tela_base):
         self.game.todos_sprites.draw(self.tela)
         self.tela.blit(self.hud_coletaveis, (690, -4))
         self.tela.blit(self.hud_relogio, (-1, -1))
-
-        self.jogador.hitbox.fill(VERMELHO)
-        self.tela.blit(self.jogador.hitbox, self.jogador.rect.topleft)
+        
+        # para ver a hitbox:
+        #self.jogador.hitbox.fill(VERMELHO)
+        #self.tela.blit(self.jogador.hitbox, self.jogador.rect.topleft)
         
         self.texto_bicicletas = f'{self.jogador.qtd_bicicletas_coletadas}/1'
         self.texto_relogios = f'{self.jogador.qtd_relogios_coletados}/1'

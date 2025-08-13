@@ -18,7 +18,7 @@ class Stefan(pg.sprite.Sprite):
         # ajuste de hitbox
         self.rect.width = 30
         self.rect.height = 48
-        self.rect.topleft = (pos_x-20, pos_y-34444449)
+        #self.rect.topleft = (pos_x-20, pos_y-34444449) essa linha n ta funfando msm
         
         self.hitbox = pg.Surface((30, 48))
         
@@ -64,10 +64,12 @@ class Stefan(pg.sprite.Sprite):
             self.frame_stefan = 0
 
         # carrega o frame de Stefan de acordo com o sprite selecionado
-        self.image = pg.Surface((50, 50), pg.SRCALPHA)
+        self.image = pg.Surface((40, 50), pg.SRCALPHA)
         self.image.blit(self.frames, (0,0), pg.Rect((self.frame_stefan*32*(50/32),0), (50,50)))
         if self.flip:
             self.image = pg.transform.flip(self.image, 1, 0)
+            
+            
         
 
         # define a física do movimento horizontal e possíveis colisões
