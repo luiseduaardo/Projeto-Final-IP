@@ -7,7 +7,7 @@ FPS = 60
 
 # infos da janela
 TITULO_JOGO = "Stefans Reise"
-IMAGEM_ICONE = "xxxx.png"
+IMAGEM_ICONE = "imagens/stefan_icone.png"
 
 # cores em tupla RGB
 PRETO = (0, 0, 0)
@@ -21,6 +21,11 @@ ROXO = (128, 0, 128)
 CIANO = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 ROSA = (255, 192, 203)
+
+# tamanhos coletáveis
+TAMANHO_JOIA = (37, 37)
+TAMANHO_BICICLETA = (45, 30)
+TAMANHO_CLOCK = (30, 30)
 
 # física do jogador
 GRAVIDADE_STEFAN = 0.8
@@ -98,4 +103,5 @@ FASE2 = [
 # matrizes pegas de arquivos .csv gerados pelo tiled
 
 # sfx
+VOLUME_MUSICA = 0.5
 TEMPO_FADE_IN = 2000

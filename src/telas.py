@@ -139,6 +139,7 @@ class TelaDeVideo(Tela_base):
             self.tela.blit(frame_surface_resized, (pos_x, pos_y))
 
         except StopIteration: # só assim ele vai chamar a fase - forçando o erro
+            self.game.tempo_restante = TEMPO_INICIAL
             self.mudar_tela(Primeira_fase)
 
 
@@ -147,6 +148,10 @@ class FaseGenerica(Tela_base):
         super().__init__(game)
         
         self.proxima_fase = proxima_fase
+
+        # cronometro
+        self.timer_segundo = pg.USEREVENT + 1
+        pg.time.set_timer(self.timer_segundo, 1000)
 
         self.game.tocar_musica('sons/musica_gameplay.wav')
         self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
@@ -172,6 +177,9 @@ class FaseGenerica(Tela_base):
     def eventos(self, eventos):
         super().eventos(eventos)
         for event in eventos:
+            if event.type == self.timer_segundo:
+                self.game.tempo_restante -= 1
+
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
                     self.jogador.pular()
@@ -179,14 +187,22 @@ class FaseGenerica(Tela_base):
             self.mudar_tela(Morte)
 
     def update(self):
+        if self.game.tempo_restante <= 0:
+            self.game.tempo_restante = 0
+            pg.time.set_timer(self.timer_segundo, 0)
+            self.mudar_tela(Morte)
+            return
+
         self.game.todos_sprites.update()
         if self.jogador.rect.top > ALTURA:
             self.mudar_tela(Morte)
+            return
         
         joias_na_fase = [s for s in self.game.coletaveis if 'joia' in s.tipo]
         if not joias_na_fase:
             # muda pra próxima fase
             self.mudar_tela(self.proxima_fase)
+            return
 
     def desenhar(self):
         super().desenhar()
@@ -197,13 +213,15 @@ class FaseGenerica(Tela_base):
         self.desenhar_texto('morrer', BRANCO, 50, 25)
         self.tela.blit(self.hud, (685, 0))
         self.desenhar_texto(self.mensagem, (30, 100, 125), 820, 72)
+        texto_tempo = f'TEMPO: {self.game.tempo_restante}'
+        self.desenhar_texto(texto_tempo, BRANCO, LARGURA // 2, 30)
 
 
 class Primeira_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase1 = [
-            Coletavel(500, ALTURA - 350, 'joia_vermelha'),
-            Coletavel(50, ALTURA - 100, 'joia_verde'),
+            Coletavel(500, ALTURA - 350, 'joia_and'),
+            Coletavel(50, ALTURA - 100, 'joia_xor'),
             Coletavel(250, ALTURA - 210, 'bicicleta'),
             Coletavel(500, ALTURA - 100, 'clock')
         ]
@@ -214,8 +232,8 @@ class Primeira_fase(FaseGenerica):
 class Segunda_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase2 = [
-            Coletavel(LARGURA/2, ALTURA - 500, 'joia_amarela'),
-            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_azul'),
+            Coletavel(LARGURA/2, ALTURA - 500, 'joia_not'),
+            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_or'),
             Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
             Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
         ]
@@ -260,6 +278,7 @@ class Morte(Tela_base):
         for event in eventos:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_r:
+                    self.game.tempo_restante = TEMPO_INICIAL
                     self.mudar_tela(Primeira_fase)
                     self.game.sfx_click.play()
                 if event.key == pg.K_m:
@@ -286,6 +305,7 @@ class Final_jogo(Tela_base):
         for event in eventos:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_r:
+                    self.game.tempo_restante = TEMPO_INICIAL
                     self.mudar_tela(Primeira_fase)
                     self.game.sfx_click.play()
                 if event.key == pg.K_m:

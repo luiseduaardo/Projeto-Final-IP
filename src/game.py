@@ -9,12 +9,14 @@ class Game:
         pg.init()
 
         pg.mixer.init()
+        pg.mixer.music.set_volume(VOLUME_MUSICA)
         self.musica_atual = None
         self.sfx_hover = pg.mixer.Sound('sons/sfx_hover.wav')
         self.sfx_click = pg.mixer.Sound('sons/sfx_click.wav')
 
         self.tela = pg.display.set_mode((LARGURA, ALTURA))
         pg.display.set_caption(TITULO_JOGO)
+        pg.display.set_icon(pg.image.load(IMAGEM_ICONE))
         self.relogio = pg.time.Clock()
         self.rodando = True
 

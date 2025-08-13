@@ -9,7 +9,7 @@ class Stefan(pg.sprite.Sprite):
         self.image = pg.Surface((32, 32), pg.SRCALPHA)
         self.frames = pg.image.load("imagens\sprites\stefan.png")
         self.flip = False
-        self.frame_stefan = 0       
+        self.frame_stefan = 0
         
         
         self.rect = self.image.get_rect()

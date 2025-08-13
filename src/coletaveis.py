@@ -6,23 +6,34 @@ class Coletavel(pg.sprite.Sprite):
         super().__init__()
         self.tipo = tipo
 
-        if self.tipo == 'joia_vermelha':
-            self.image = pg.Surface((20, 20))
-            self.image.fill(VERMELHO)
-        elif self.tipo == 'joia_azul':
-            self.image = pg.Surface((20, 20))
-            self.image.fill(AZUL)
-        elif self.tipo == 'joia_verde':
-            self.image = pg.Surface((20, 20))
-            self.image.fill(VERDE)
-        elif self.tipo == 'joia_amarela':
-            self.image = pg.Surface((20, 20))
-            self.image.fill(AMARELO)
+        imagem_original = None
+        tamanho_final = None
+
+        if self.tipo == 'joia_and':
+            imagem_original = pg.image.load(f'imagens/sprites/sprite_and.png').convert_alpha()
+            tamanho_final = TAMANHO_JOIA
+        
+        elif self.tipo == 'joia_or':
+            imagem_original = pg.image.load(f'imagens/sprites/sprite_or.png').convert_alpha()
+            tamanho_final = TAMANHO_JOIA
+
+        elif self.tipo == 'joia_not':
+            imagem_original = pg.image.load(f'imagens/sprites/sprite_not.png').convert_alpha()
+            tamanho_final = TAMANHO_JOIA
+
+        elif self.tipo == 'joia_xor':
+            imagem_original = pg.image.load(f'imagens/sprites/sprite_xor.png').convert_alpha()
+            tamanho_final = TAMANHO_JOIA
+
         elif self.tipo == 'bicicleta':
-            self.image = pg.Surface((40, 25))
-            self.image.fill(CIANO)
+            imagem_original = pg.image.load('imagens/sprites/sprite_bike.png').convert_alpha()
+            tamanho_final = TAMANHO_BICICLETA
+
         elif self.tipo == 'clock':
-            self.image = pg.Surface((25, 25))
-            self.image.fill(BRANCO)
+            imagem_original = pg.image.load('imagens/sprites/sprite_clock.png').convert_alpha()
+            tamanho_final = TAMANHO_CLOCK
+        
+        if imagem_original:
+            self.image = pg.transform.scale(imagem_original, tamanho_final)
         
         self.rect = self.image.get_rect(topleft = (pos_x, pos_y))
