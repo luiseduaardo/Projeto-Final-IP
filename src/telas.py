@@ -246,8 +246,8 @@ class FaseGenerica(Tela_base):
 class Primeira_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase1 = [
-            Coletavel(720, ALTURA - 120, 'joia_and'),
-            Coletavel(50, ALTURA - 100, 'joia_xor'),
+            Coletavel(650, ALTURA - 120, 'joia_and'),
+            Coletavel(150, ALTURA - 100, 'joia_xor'),
             Coletavel(250, ALTURA - 350, 'bicicleta'),
             Coletavel(50, ALTURA - 460, 'clock')
         ]
