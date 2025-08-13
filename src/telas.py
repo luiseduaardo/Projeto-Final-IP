@@ -259,7 +259,7 @@ class Primeira_fase(FaseGenerica):
             Coletavel(830, 80, "joia_and"),
             Coletavel(170, ALTURA-90, "bicicleta"),
             Coletavel(50, 200, "joia_xor"),
-            Coletavel(120, 250, "clock")
+            Coletavel(250, 250, "clock")
 
         ]
 
@@ -269,10 +269,10 @@ class Primeira_fase(FaseGenerica):
 class Segunda_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase2 = [
-            Coletavel(LARGURA/2, ALTURA - 500, 'joia_not'),
-            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_or'),
+            Coletavel(200, 90, 'joia_not'),
+            Coletavel(LARGURA/2 + 120, ALTURA - 140, 'joia_or'),
             Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
-            Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
+            Coletavel(820, 150, 'clock')
         ]
 
         super().__init__(game, FASE2, coletaveis_fase2, Final_jogo)
