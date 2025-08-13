@@ -127,24 +127,15 @@ class Stefan(pg.sprite.Sprite):
             if 'joia' in item.tipo:
                 self.game.coletar_joia(item.tipo)
                 self.qtd_joias_coletadas +=1 
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
-                self.qtd_joias_coletadas +=1 
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
             
             elif item.tipo == 'bicicleta':
                 self.ativar_boost_velocidade()
                 self.qtd_bicicletas_coletadas += 1
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
-                self.qtd_bicicletas_coletadas += 1
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
-
+            
             elif item.tipo == 'clock':
                 self.game.adicionar_tempo(TEMPO_CLOCK)
                 self.qtd_relogios_coletados += 1
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
-                self.qtd_relogios_coletados += 1
-                self.game.tela_atual.mensagem = f'{self.qtd_bicicletas_coletadas}/1         {self.qtd_relogios_coletados}/1      {self.qtd_joias_coletadas}/2'
-
+             
     def ativar_boost_velocidade(self):
         print(f"bicicleta coletada.")
         self.boost_ativo = True

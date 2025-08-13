@@ -12,13 +12,13 @@ IMAGEM_ICONE = "imagens/stefan_icone.png"
 # cores em tupla RGB
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
-VERMELHO = (255, 0, 0)
+VERMELHO = (200, 0, 0)
 VERDE = (0, 255, 0)
 AZUL = (0, 0, 255)
 AMARELO = (255, 255, 0)
 LARANJA = (255, 165, 0)
 ROXO = (128, 0, 128)
-CIANO = (0, 255, 255)
+CIANO = (30, 100, 125)
 MAGENTA = (255, 0, 255)
 ROSA = (255, 192, 203)
 

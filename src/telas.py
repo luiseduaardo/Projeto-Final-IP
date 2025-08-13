@@ -23,12 +23,18 @@ class Trampolim(Plataforma):
         super().__init__(x, y, largura, altura)
         self.forca_impulso = FORCA_TRAMPOLIM
 
+class Plataforma_mortal(Plataforma):
+    def __init__(self, x, y, largura, altura):
+        super().__init__(x, y, largura, altura)
+
 
 class Tela_base:
     def __init__(self, game):
         self.game = game
         self.tela = game.tela
-        self.fonte_padrao = pg.font.SysFont('segoeui', 20, True, False)
+
+        self.fonte_pixel_pequena = pg.font.Font("imagens/fonte_pixelada.ttf", 16)
+        self.fonte_pixel_grande = pg.font.Font("imagens/fonte_pixelada.ttf", 26)
 
     def eventos(self, eventos):
         for event in eventos:
@@ -36,13 +42,18 @@ class Tela_base:
                 self.game.rodando = False
 
     def desenhar_texto(self, mensagem, cor, x, y):
-        mensagem_formatada = self.fonte_padrao.render(mensagem, True, cor)
+        if mensagem.isnumeric():
+            mensagem_formatada = self.fonte_pixel_grande.render(mensagem, False, cor)
+        else:
+            mensagem_formatada = self.fonte_pixel_pequena.render(mensagem, False, cor)
+
         ret_mensagem = mensagem_formatada.get_rect(center=(x, y))
         self.tela.blit(mensagem_formatada, ret_mensagem)
 
     def mudar_tela(self, nova_tela_classe):
         self.game.todos_sprites.empty()
         self.game.plataformas.empty()
+        self.game.plataformas_mortais.empty()
         self.game.coletaveis.empty()
         self.game.tela_atual = nova_tela_classe(self.game)
 
@@ -154,12 +165,12 @@ class FaseGenerica(Tela_base):
         pg.time.set_timer(self.timer_segundo, 1000)
 
         self.game.tocar_musica('sons/musica_gameplay.wav')
-        self.hud = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
-        self.hud = pg.transform.scale(self.hud, (int(952/3.5), int(342/3.5)))
+
         self.game.joias_coletadas.clear()
         
-        self.mundo, plataformas_da_fase, pos_jogador = mapa.desehar_mapa(dados_mapa)
-        self.game.plataformas.add(plataformas_da_fase)
+        self.mundo, plataformas_normais, plataformas_mortais, pos_jogador = mapa.desehar_mapa(dados_mapa)
+        self.game.plataformas.add(plataformas_normais)
+        self.game.plataformas_mortais.add(plataformas_mortais)
         #self.game.todos_sprites.add(plataformas_da_fase) # hitbox
 
         self.jogador = Stefan(self.game, pos_jogador[0], pos_jogador[1])
@@ -169,10 +180,11 @@ class FaseGenerica(Tela_base):
         self.game.coletaveis.add(coletaveis_mapa)
         self.game.todos_sprites.add(coletaveis_mapa)
 
-        # HUD e botão de morrer
-        botao_morrer_img = pg.Surface((80, 30)); botao_morrer_img.fill(VERMELHO)
-        self.botao_morrer = Botao(self.game, 10, 10, botao_morrer_img, 1)
-        self.mensagem = f'{self.jogador.qtd_bicicletas_coletadas}/1      {self.jogador.qtd_relogios_coletados}/1      {self.jogador.qtd_joias_coletadas}/2'
+        # HUD
+        self.hud_coletaveis = pg.image.load('imagens/hud_coletaveis.png').convert_alpha()
+        self.hud_coletaveis = pg.transform.scale(self.hud_coletaveis, (int(952/3.5), int(342/3.5)))
+        self.hud_relogio = pg.image.load('imagens/hud_relogio.png').convert_alpha()
+        self.hud_relogio = pg.transform.scale(self.hud_relogio, (int(470/4), int(325/4)))
 
     def eventos(self, eventos):
         super().eventos(eventos)
@@ -183,8 +195,6 @@ class FaseGenerica(Tela_base):
             if event.type == pg.KEYDOWN:
                 if event.key in (pg.K_SPACE, pg.K_w, pg.K_UP):
                     self.jogador.pular()
-        if self.botao_morrer.click():
-            self.mudar_tela(Morte)
 
     def update(self):
         if self.game.tempo_restante <= 0:
@@ -195,6 +205,10 @@ class FaseGenerica(Tela_base):
 
         self.game.todos_sprites.update()
         if self.jogador.rect.top > ALTURA:
+            self.mudar_tela(Morte)
+            return
+
+        if pg.sprite.spritecollideany(self.jogador, self.game.plataformas_mortais):
             self.mudar_tela(Morte)
             return
         
@@ -209,12 +223,24 @@ class FaseGenerica(Tela_base):
         self.tela.fill(AZUL)
         self.tela.blit(self.mundo, (0, 0))
         self.game.todos_sprites.draw(self.tela)
-        self.botao_morrer.desenhar_botao(self.tela)
-        self.desenhar_texto('morrer', BRANCO, 50, 25)
-        self.tela.blit(self.hud, (685, 0))
-        self.desenhar_texto(self.mensagem, (30, 100, 125), 820, 72)
-        texto_tempo = f'TEMPO: {self.game.tempo_restante}'
-        self.desenhar_texto(texto_tempo, BRANCO, LARGURA // 2, 30)
+        self.tela.blit(self.hud_coletaveis, (690, -4))
+        self.tela.blit(self.hud_relogio, (-1, -1))
+
+
+        self.texto_bicicletas = f'{self.jogador.qtd_bicicletas_coletadas}/1'
+        self.texto_relogios = f'{self.jogador.qtd_relogios_coletados}/1'
+        self.texto_joias = f'{self.jogador.qtd_joias_coletadas}/2'
+
+        self.desenhar_texto(self.texto_bicicletas, CIANO, 746, 70)
+        self.desenhar_texto(self.texto_relogios, CIANO, 831, 70)
+        self.desenhar_texto(self.texto_joias, CIANO, 901, 70)
+
+        texto_tempo = f'{self.game.tempo_restante}'
+
+        if int(texto_tempo) > 20:
+            self.desenhar_texto(texto_tempo, CIANO, 51, 37)
+        else: #muda a cor quando estiver com pouco tempo
+            self.desenhar_texto(texto_tempo, VERMELHO, 51, 37)
 
 
 class Primeira_fase(FaseGenerica):

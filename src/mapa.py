@@ -11,7 +11,8 @@ def desehar_mapa(fase):
     plano = pygame.Surface((960, 640), pygame.SRCALPHA)
     sheet = pygame.image.load("imagens/sprites/spritesheet2.png").convert_alpha()
     coords = [0, 0]
-    plats = []
+    plats_normais = []
+    plats_mortais = []
     
     for linha in fase: # TODO: mudar o sistema pra colocar fase_atual e pra pegar o estado de fase atual
             #TODO: ajeitar a transparencia dos tiles  pq nao ta rodando
@@ -21,17 +22,18 @@ def desehar_mapa(fase):
                  
                 if item == 0: # chao
                     spritex = spritey = 0
-                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+                    plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 32))
                 
                 elif item == 4: # raios
                     spritex = 128
                     spritey = 0
+                    plats_mortais.append(telas.Plataforma_mortal(coords[0], coords[1], 32, 32))
 
                 elif item == 18: # bobina
                     # spritesheet2
                     spritex = 192
                     spritey = 0
-                    plats.append(telas.Plataforma(coords[0], coords[1]+11, 32, 21))
+                    plats_mortais.append(telas.Plataforma_mortal(coords[0], coords[1]+11, 32, 21))
                     
                     #spritesheet1
                     # spritex = 0
@@ -41,7 +43,7 @@ def desehar_mapa(fase):
                     #spritesheet2
                     spritex = 160
                     spritey = 0
-                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+                    plats_mortais.append(telas.Plataforma_mortal(coords[0], coords[1], 32, 32))
                     
                     #spritesheet1
                     #spritex = 0
@@ -50,7 +52,7 @@ def desehar_mapa(fase):
                 elif item in [37, 38, 39, 40]: # trampolim
                     spritex = ([37, 38, 39, 40].index(item) + 1)*32
                     spritey = 64
-                    plats.append(telas.Trampolim(coords[0], coords[1], 32, 32))
+                    plats_normais.append(telas.Trampolim(coords[0], coords[1], 32, 32))
                     
                 elif item == 54: # corrente
                     spritex = 0
@@ -64,7 +66,7 @@ def desehar_mapa(fase):
                 elif item == 90: # plataform aflutuante
                     spritex = 0
                     spritey = 160
-                    plats.append(telas.Plataforma(coords[0], coords[1], 32, 32))
+                    plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 32))
 
                 elif item == 99: # posição de início de stefan
                     pos_jogador = (coords[0], coords[1])
@@ -85,4 +87,4 @@ def desehar_mapa(fase):
     
 
 
-    return plano, plats, pos_jogador
+    return plano, plats_normais, plats_mortais, pos_jogador
