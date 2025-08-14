@@ -160,6 +160,8 @@ class FaseGenerica(Tela_base):
         
         self.proxima_fase = proxima_fase
 
+        self.fundo = pg.image.load('imagens/telas/fundo_fases.jpg').convert()
+
         # cronometro
         self.timer_segundo = pg.USEREVENT + 1
         pg.time.set_timer(self.timer_segundo, 1000)
@@ -171,7 +173,7 @@ class FaseGenerica(Tela_base):
         self.mundo, plataformas_normais, plataformas_mortais, pos_jogador = mapa.desehar_mapa(dados_mapa)
         self.game.plataformas.add(plataformas_normais)
         self.game.plataformas_mortais.add(plataformas_mortais)
-        #self.game.todos_sprites.add(plataformas_da_fase) # hitbox
+        #self.game.todos_sprites.add(plataformas_mortais) # hitbox
 
         self.jogador = Stefan(self.game, pos_jogador[0], pos_jogador[1])
         self.game.todos_sprites.add(self.jogador)
@@ -223,13 +225,16 @@ class FaseGenerica(Tela_base):
 
     def desenhar(self):
         super().desenhar()
-        self.tela.fill(AZUL)
+        self.tela.blit(self.fundo, (0, 0))
         self.tela.blit(self.mundo, (0, 0))
         self.game.todos_sprites.draw(self.tela)
         self.tela.blit(self.hud_coletaveis, (690, -4))
         self.tela.blit(self.hud_relogio, (-1, -1))
-
-
+        
+        # para ver a hitbox:
+        #self.jogador.hitbox.fill(VERMELHO)
+        #self.tela.blit(self.jogador.hitbox, self.jogador.rect.topleft)
+        
         self.texto_bicicletas = f'{self.jogador.qtd_bicicletas_coletadas}/1'
         self.texto_relogios = f'{self.jogador.qtd_relogios_coletados}/1'
         self.texto_joias = f'{self.jogador.qtd_joias_coletadas}/2'
@@ -249,10 +254,16 @@ class FaseGenerica(Tela_base):
 class Primeira_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase1 = [
-            Coletavel(500, ALTURA - 350, 'joia_and'),
-            Coletavel(50, ALTURA - 100, 'joia_xor'),
-            Coletavel(250, ALTURA - 210, 'bicicleta'),
-            Coletavel(500, ALTURA - 100, 'clock')
+            #Coletavel(650, ALTURA - 120, 'joia_and'),
+            #Coletavel(150, ALTURA - 100, 'joia_xor'),
+            #Coletavel(250, ALTURA - 350, 'bicicleta'),
+            #Coletavel(50, ALTURA - 460, 'clock')
+
+            Coletavel(830, 80, "joia_and"),
+            Coletavel(170, ALTURA-90, "bicicleta"),
+            Coletavel(50, 200, "joia_xor"),
+            Coletavel(250, 250, "clock")
+
         ]
 
         super().__init__(game, FASE1, coletaveis_fase1, Segunda_fase)
@@ -261,10 +272,10 @@ class Primeira_fase(FaseGenerica):
 class Segunda_fase(FaseGenerica):
     def __init__(self, game):
         coletaveis_fase2 = [
-            Coletavel(LARGURA/2, ALTURA - 500, 'joia_not'),
-            Coletavel(LARGURA/2 + 150, ALTURA - 100, 'joia_or'),
+            Coletavel(200, 90, 'joia_not'),
+            Coletavel(LARGURA/2 + 120, ALTURA - 140, 'joia_or'),
             Coletavel(LARGURA/2, ALTURA - 100, 'bicicleta'),
-            Coletavel(LARGURA/2 - 100, ALTURA - 100, 'clock')
+            Coletavel(820, 150, 'clock')
         ]
 
         super().__init__(game, FASE2, coletaveis_fase2, Final_jogo)
