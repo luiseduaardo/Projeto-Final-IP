@@ -45,7 +45,6 @@ class Stefan(pg.sprite.Sprite):
             aceleracao_base = ACELERACAO_BOOST
             if pg.time.get_ticks() > self.boost_tempo_fim:
                 self.boost_ativo = False
-                print(f"fim do tempo do boost de velocidade")
 
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
@@ -136,19 +135,21 @@ class Stefan(pg.sprite.Sprite):
         itens_coletados = pg.sprite.spritecollide(self, self.game.coletaveis, True)
         for item in itens_coletados:
             if 'joia' in item.tipo:
+                self.game.sfx_joia.play()
                 self.game.coletar_joia(item.tipo)
                 self.qtd_joias_coletadas +=1 
             
             elif item.tipo == 'bicicleta':
+                self.game.sfx_bike.play()
                 self.ativar_boost_velocidade()
                 self.qtd_bicicletas_coletadas += 1
             
             elif item.tipo == 'clock':
+                self.game.sfx_clock.play()
                 self.game.adicionar_tempo(TEMPO_CLOCK)
                 self.qtd_relogios_coletados += 1
              
     def ativar_boost_velocidade(self):
-        print(f"bicicleta coletada.")
         self.boost_ativo = True
         self.boost_tempo_fim = pg.time.get_ticks() + TEMPO_BOOST
 

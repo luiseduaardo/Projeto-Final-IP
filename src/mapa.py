@@ -63,7 +63,7 @@ def desehar_mapa(fase):
                     spritey = 128
                     
 
-                elif item == 90: # plataform aflutuante
+                elif item == 90: # plataforma flutuante
                     spritex = 0
                     spritey = 160
                     plats_normais.append(telas.Plataforma(coords[0], coords[1], 32, 5))
