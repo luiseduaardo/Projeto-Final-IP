@@ -41,25 +41,25 @@ O projeto foi organizado para garantir uma separação entre o código-fonte, os
 ## 📸 | Capturas de tela
 
 *Tela de início*
-
+![alt text](imagens/telas_relatorio/tela_inicio.png)
 
 *Tela de instruções*
-
+![alt text](imagens/telas_relatorio/tela_instrucoes.png)
 
 *Tela de contextualização da história do jogo*
-
+![alt text](imagens/telas_relatorio/tela_slideshow.png)
 
 *Primeira fase*
-
+![alt text](imagens/telas_relatorio/primeiro_nivel.png)
 
 *Segunda fase*
-
+![alt text](imagens/telas_relatorio/segundo_nivel.png)
 
 *Tela de vitória*
-
+![alt text](imagens/telas_relatorio/tela_vitoria.png)
 
 *Tela de derrota*
-
+![alt text](imagens/telas_relatorio/tela_derrota.png)
 
 ## ⚙️ | Ferramentas utilizadas e justificativas
 🐍 **Python**
@@ -91,6 +91,27 @@ Foi escolhido pela facilidade na produção de diferentes tipos de efeitos sonor
 
 🎵 **YouTube** & **Wav.ninja**
 Possuem uma extensa quantidade de opções facilmente acessíveis para a trilha sonora do projeto, permitindo maior gama de opções e possibilidade de buscar por temas específicos.
+
+
+## 🕹️ | Como Executar
+1. Certifique-se de ter o **Python 3.8+** ou superior instalado na sua máquina.
+2. Instale o **Pygame** (necessário para rodar o jogo):
+   ```bash
+   pip install pygame
+   ```
+3. Baixe ou clone o repositório:
+   ```bash
+   git clone https://github.com/luiseduaardo/Projeto-Final-IP.git
+   ```
+4. Navegue até a pasta do projeto:
+   ```bash
+   cd Projeto-Final-IP
+   ```
+5. Execute o arquivo principal que está dentro de `src/`:
+   ```bash
+   python src/main.py
+   ```
+6. Divirta-se! 🎮
 
 
 ## 👥 | Divisão de tarefas
@@ -134,11 +155,20 @@ A partir disso, pudemos dividir todo o nosso programa em múltiplos arquivos men
 
 
 ## 🧠 | Desafios e lições aprendidas
-- *Qual foi o maior erro cometido durante o projeto? Como vocês lidaram com ele?*
+**Qual foi o maior erro cometido durante o projeto? Como vocês lidaram com ele?**
+Percebemos no desenvolvimento do nosso projeto dois erros que geraram aprendizados valiosos, um técnico e um de design.
 
+O maior erro técnico foi a gestão de um merge complexo para a branch develop. Isso ocorreu após um período de desenvolvimento paralelo, onde três membros da equipe trabalharam em feature branches distintas por um tempo prolongado. Como resultado, as bases de código divergiram bastante, gerando múltiplos conflitos que foram muito difíceis de resolver. Para lidar com a situação, a equipe teve de resolver os conflitos na força bruta, revisando e reescrevendo partes do código linha a linha para garantir que as três funcionalidades fossem unificadas sem introduzir novos bugs. A lição foi a importância de realizar merges menores e mais frequentes para evitar grandes divergências.
 
-- *Qual foi o maior desafio enfrentado durante o projeto? Como vocês lidaram com ele?*
+O segundo erro foi de design de níveis. Inicialmente, projetamos mapas mais complexos de execução e pouco integrados com os coletáveis. No entanto, durante os testes, percebemos que a física que havíamos programado para o personagem, principalmente a questão de pulos, não era compatível com a dificuldade dos mapas. Como a física já estava bastante ajustada e precisa, tomamos a decisão de redesenhar os mapas. Simplificamos várias partes e ajustamos os desafios para que continuassem divertidos e pudessem ser executados de fato, mantendo um nível de dificuldade razoável. Com isso, percebemos a importância de testar a jogabilidade de forma integrada com o design de níveis desde o início.
 
+**Qual foi o maior desafio enfrentado durante o projeto? Como vocês lidaram com ele?**
+Nosso maior desafio foi conseguir equilibrar nossas ideias com o tempo que tivemos. No começo, a gente se empolgou e pensou em várias mecânicas mais complexas, como plataformas móveis, um nível para cada jóia, etc. Entretanto, muitas dessas ideias, apesar de legais, eram inviáveis para o nosso prazo. Sempre chegávamos no entrave entre ter que escolher entre o que queríamos fazer e o que realmente dava pra fazer bem feito.
 
-- *Quais as lições aprendidas durante o projeto?*
+Para lidar com isso, a gente conversava muito e priorizava o tempo todo. Para cada ideia, a gente discutia o que realmente era essencial pro jogo funcionar. Isso nos forçou a cortar algumas coisas e a simplificar outras, mas sempre com o cuidado de cumprir os requisitos principais do projeto. Essa comunicação constante foi essencial para manter o foco e entregar um jogo completo e legal de jogar.
+
+**Quais as lições aprendidas durante o projeto?**
+- É essencial integrar e testar tudo junto: pudemos perceber as partes do jogo, assim como de qualquer projeto que formos fazer daqui para a frente, não vivem isoladas. O nosso primeiro design de mapas, por exemplo, não funcionava com a física do personagem que tínhamos programado. Não adianta termos uma parte legal se ela não "conversa" com as outras.
+
+- Saber descartar ideias é tão importante quanto ter: com esse projeto, pudemos aprender na prática a priorizar o que era essencial para a experiência do jogo e a simplificar ou cortar o resto. Essa habilidade de gerenciar o escopo foi o que nos permitiu, no fim das contas, entregar um jogo completo e funcional.
 
